@@ -11,7 +11,7 @@
         "projectName": "Jump",
         "projectPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj",
         "packagesPath": "C:\\Users\\gabii\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\obj\\",
+        "outputPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AssimpNet": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
             "OpenTK": {
               "target": "Package",
               "version": "[4.9.4, )"

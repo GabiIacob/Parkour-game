@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="OpenTK" Version="4.9.4" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
     <PackageReference Include="System.Windows.Extensions" Version="10.0.1" />
@@ -15,6 +16,22 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="models\GRASS_BLOCK.fbx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="models\STONE.dae">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="textures\GRASSBLOCK_ATLAS.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="textures\stone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
