@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Jump.csproj": {}
+    "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Jump.csproj": {
+    "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Jump.csproj",
+        "projectUniqueName": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj",
         "projectName": "Jump",
-        "projectPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Jump.csproj",
+        "projectPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj",
         "packagesPath": "C:\\Users\\gabii\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\obj\\",
         "projectStyle": "PackageReference",

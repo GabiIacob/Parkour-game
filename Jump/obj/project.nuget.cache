@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "lbvfpi++8+A=",
+  "dgSpecHash": "1RqkjIkK79s=",
   "success": true,
-  "projectFilePath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Jump.csproj",
+  "projectFilePath": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\jump\\Jump.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gabii\\.nuget\\packages\\microsoft.win32.systemevents\\10.0.1\\microsoft.win32.systemevents.10.0.1.nupkg.sha512",
     "C:\\Users\\gabii\\.nuget\\packages\\opentk\\4.9.4\\opentk.4.9.4.nupkg.sha512",
