@@ -18,6 +18,13 @@ namespace Jump
         private SoundPlayer _musicPlayer;
         private SoundPlayer _jumpSound;
         private SoundPlayer _landSound;
+        private SoundPlayer _damageSound;
+
+        // Player
+        private Player _player;
+        private float _lavaTimer = 0f;
+        private float _fallDamageThreshold = 10f; // Viteza la care primești damage
+        private float _lastFallSpeed = 0f;
 
         // Randare
         private Camera _camera;
@@ -36,6 +43,17 @@ namespace Jump
         //rock
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
+
+        // Particule de foc
+        private class FireParticle
+        {
+            public Vector3 Position;
+            public Vector3 Velocity;
+            public float Life;
+            public float Size;
+        }
+        private List<FireParticle> fireParticles = new List<FireParticle>();
+        private Random random = new Random();
 
         // Input
         private Vector2 _lastMousePosition;
@@ -66,6 +84,9 @@ namespace Jump
             // Cameră
             _camera = new Camera(new Vector3(0, 0, 8));
 
+            // Player
+            _player = new Player(100);
+
             // Muzică
             try
             {
@@ -77,6 +98,7 @@ namespace Jump
             // Sunete
             try { _jumpSound = new SoundPlayer("jump.wav"); } catch { }
             try { _landSound = new SoundPlayer("land.wav"); } catch { }
+            try { _damageSound = new SoundPlayer("damage.wav"); } catch { }
 
             // Shader code
             string vertexShaderCode = @"#version 330 core
@@ -165,11 +187,13 @@ namespace Jump
             {
                 Model rockModel = new Model("models/rock.dae");
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 4; i++)
                     rocks.Add(rockModel);
 
                 rockPositions.Add(new Vector3(-14f, 3f, 14f));
                 rockPositions.Add(new Vector3(14f, 3f, 14f));
+                rockPositions.Add(new Vector3(-14f, 3f, -14f));
+                rockPositions.Add(new Vector3(14f, 3f, -14f));
 
                 float rockScale = 6f;
                 Vector3 rockSize = new Vector3(rockScale, rockScale, rockScale);
@@ -257,7 +281,11 @@ namespace Jump
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             if (!isPlaying) HandleMenuInput();
-            else HandleGameInput(e);
+            else
+            {
+                HandleGameInput(e);
+                UpdateFireParticles(e);
+            }
         }
 
         private void HandleMenuInput()
@@ -291,6 +319,39 @@ namespace Jump
             Vector3 playerSize = new Vector3(0.5f, 1.8f, 0.5f);
             float eyeHeight = 1.6f;
             float moveSpeed = 4f * (float)e.Time;
+
+            // Obține referința la lava o singură dată
+            var lavaBlock = physicalBlocks[0];
+
+            // Verifică dacă playerul e în lava
+            bool isInLava = _camera.Position.Y - eyeHeight < lavaBlock.Position.Y + lavaBlock.Size.Y + 0.5f;
+
+            // Damage de la lava la fiecare 5 secunde
+            if (isInLava)
+            {
+                _lavaTimer += (float)e.Time;
+                if (_lavaTimer >= 5f)
+                {
+                    _player.TakeDmg(10);
+                    _damageSound?.Play();
+                    System.Console.WriteLine($"Lava damage! Health: {_player.health}");
+                    _lavaTimer = 0f;
+
+                    // Moarte
+                    if (_player.health <= 0)
+                    {
+                        _camera.Position = new Vector3(0f, eyeHeight, 0f);
+                        verticalSpeed = 0f;
+                        isOnGround = true;
+                        _player = new Player(100);
+                        System.Console.WriteLine("Player died! Respawning...");
+                    }
+                }
+            }
+            else
+            {
+                _lavaTimer = 0f; // Reset timer când nu ești în lava
+            }
 
             // Jump cu sunet
             if (isOnGround && KeyboardState.IsKeyDown(Keys.Space))
@@ -330,12 +391,33 @@ namespace Jump
                 _camera.Position.Y = testPosY.Y;
                 wasOnGround = isOnGround;
                 isOnGround = false;
+                _lastFallSpeed = verticalSpeed; // Salvează viteza de cădere
             }
             else
             {
                 if (verticalSpeed < 0)
                 {
                     _camera.Position.Y = collidedBlock.Position.Y + collidedBlock.Size.Y + eyeHeight;
+
+                    // Fall damage - dacă cazi prea repede
+                    if (_lastFallSpeed < -_fallDamageThreshold && !wasOnGround)
+                    {
+                        int fallDamage = (int)((-_lastFallSpeed - _fallDamageThreshold) * 2);
+                        _player.TakeDmg(fallDamage);
+                        _damageSound?.Play();
+                        System.Console.WriteLine($"Fall damage: {fallDamage}! Health: {_player.health}");
+
+                        // Moarte
+                        if (_player.health <= 0)
+                        {
+                            _camera.Position = new Vector3(0f, eyeHeight, 0f);
+                            verticalSpeed = 0f;
+                            isOnGround = true;
+                            _player = new Player(100);
+                            System.Console.WriteLine("Player died from fall! Respawning...");
+                            return;
+                        }
+                    }
 
                     // Land sound - doar dacă erai în aer
                     if (!wasOnGround)
@@ -350,14 +432,16 @@ namespace Jump
                     wasOnGround = isOnGround;
                 }
                 verticalSpeed = 0f;
+                _lastFallSpeed = 0f;
             }
 
-            var lava = physicalBlocks[0];
-            if (_camera.Position.Y - eyeHeight < lava.Position.Y + lava.Size.Y)
+            // Lava reset - folosește aceeași variabilă lavaBlock
+            if (_camera.Position.Y - eyeHeight < lavaBlock.Position.Y + lavaBlock.Size.Y)
             {
                 _camera.Position = new Vector3(0f, eyeHeight, 0f);
                 verticalSpeed = 0f;
                 isOnGround = true;
+                _lavaTimer = 0f;
             }
 
             Vector2 mouse = MouseState.Position;
@@ -420,6 +504,83 @@ namespace Jump
             return null;
         }
 
+        // ===================== FIRE PARTICLES =====================
+        private void UpdateFireParticles(FrameEventArgs e)
+        {
+            float deltaTime = (float)e.Time;
+
+            // Spawn particule noi (20 particule pe secundă)
+            for (int i = 0; i < 50; i++)
+            {
+                if (random.NextDouble() < deltaTime)
+                {
+                    fireParticles.Add(new FireParticle
+                    {
+                        Position = new Vector3(
+                            (float)(random.NextDouble() * 40 - 20), // X random pe lava
+                            -1.9f,                                   // Deasupra lavei
+                            (float)(random.NextDouble() * 40 - 20)  // Z random pe lava
+                        ),
+                        Velocity = new Vector3(
+                            (float)(random.NextDouble() * 0.5 - 0.25), // Drift ușor
+                            (float)(random.NextDouble() * 2 + 1),      // Urcă în sus
+                            (float)(random.NextDouble() * 0.5 - 0.25)
+                        ),
+                        Life = 1f,
+                        Size = (float)(random.NextDouble() * 0.3 + 0.2)
+                    });
+                }
+            }
+
+            // Update particule existente
+            for (int i = fireParticles.Count - 1; i >= 0; i--)
+            {
+                var p = fireParticles[i];
+
+                p.Position += p.Velocity * deltaTime;
+                p.Velocity.Y -= 0.5f * deltaTime; // Gravitație ușoară
+                p.Life -= deltaTime;
+
+                if (p.Life <= 0)
+                    fireParticles.RemoveAt(i);
+            }
+        }
+
+        private void RenderFireParticles()
+        {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One); // Additive blending
+
+            foreach (var p in fireParticles)
+            {
+                float alpha = p.Life; // Fade out
+                Vector4 color;
+
+                // Gradient de culoare: galben -> portocaliu -> roșu
+                if (p.Life > 0.7f)
+                    color = new Vector4(1f, 1f, 0.3f, alpha); // Galben
+                else if (p.Life > 0.3f)
+                    color = new Vector4(1f, 0.5f, 0f, alpha); // Portocaliu
+                else
+                    color = new Vector4(1f, 0f, 0f, alpha);   // Roșu
+
+                // Render particula ca billboard
+                Matrix4 modelMatrix =
+                    Matrix4.CreateScale(p.Size) *
+                    Matrix4.CreateTranslation(p.Position);
+
+                _shader.SetMatrix4("model", modelMatrix);
+                _shader.SetBool("useTex", false);
+                _shader.SetVector4("color", color);
+
+                // Desenează un quad simplu
+                GL.BindVertexArray(_vao);
+                GL.DrawArrays(PrimitiveType.Triangles, 6, 6); // Refolosim butonul verde
+            }
+
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha); // Reset blending
+        }
+
         // ===================== RENDER =====================
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -479,10 +640,12 @@ namespace Jump
 
             if (rocks.Count > 0)
             {
+                System.Console.WriteLine($"Rendering {rocks.Count} rocks at positions:");
                 for (int i = 0; i < rocks.Count; i++)
                 {
                     var rock = rocks[i];
                     var pos = rockPositions[i];
+                    System.Console.WriteLine($"  Rock {i}: {pos}");
 
                     Matrix4 modelMatrix =
                         Matrix4.CreateScale(6f) *
@@ -498,6 +661,9 @@ namespace Jump
                     GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
                 }
             }
+
+            // Render particule de foc
+            RenderFireParticles();
         }
 
         private void RenderMenu()
