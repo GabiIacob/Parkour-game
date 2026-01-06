@@ -23,7 +23,7 @@ namespace Jump
         // Player
         private Player _player;
         private float _lavaTimer = 0f;
-        private float _fallDamageThreshold = 10f; // Viteza la care primești damage
+        private float _fallDamageThreshold = 10f; 
         private float _lastFallSpeed = 0f;
 
         // Randare
