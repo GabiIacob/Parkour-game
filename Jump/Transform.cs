@@ -4,66 +4,45 @@ namespace Jump
 {
     public class Transform
     {
-        // =====================
-        // DATE
-        // =====================
+        
 
         public Vector3 Position = Vector3.Zero;
-        public Vector3 Rotation = Vector3.Zero; // grade
+        public Vector3 Rotation = Vector3.Zero; 
         public Vector3 Scale = Vector3.One;
 
-        // =====================
-        // TRANSLATIE
-        // =====================
-
-        // Mută obiectul relativ
+        
         public void Translate(Vector3 delta)
         {
             Position += delta;
         }
 
-        // Setează poziția direct
         public void SetPosition(Vector3 position)
         {
             Position = position;
         }
 
-        // =====================
-        // ROTATIE
-        // =====================
-
-        // Rotește obiectul relativ (grade)
+       
         public void Rotate(Vector3 delta)
         {
             Rotation += delta;
         }
 
-        // Setează rotația direct
         public void SetRotation(Vector3 rotation)
         {
             Rotation = rotation;
         }
 
-        // =====================
-        // SCALARE
-        // =====================
-
-        // Scalează relativ
         public void ScaleBy(Vector3 factor)
         {
             Scale *= factor;
         }
 
-        // Setează scalarea direct
         public void SetScale(Vector3 scale)
         {
             Scale = scale;
         }
 
-        // =====================
-        // MATRICE MODEL
-        // =====================
-
+       
         public Matrix4 GetModelMatrix()
         {
             Matrix4 scaleMatrix = Matrix4.CreateScale(Scale);
