@@ -44,3 +44,5 @@ C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\models\GRASS_BLO
 C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\textures\GRASSBLOCK_ATLAS.png
 C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\models\STONE.dae
 C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\textures\stone.png
+C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\models\rock.dae
+C:\Users\gabii\Desktop\UMFST\an3\Gpc\Jump\jump\bin\Debug\net8.0\textures\rock.png

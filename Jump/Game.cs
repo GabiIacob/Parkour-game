@@ -8,8 +8,6 @@ using System.Collections.Generic;
 
 namespace Jump
 {
-    
-
     class Game : GameWindow
     {
         // ===================== STARE JOC =====================
@@ -18,6 +16,8 @@ namespace Jump
 
         // Sunet
         private SoundPlayer _musicPlayer;
+        private SoundPlayer _jumpSound;
+        private SoundPlayer _landSound;
 
         // Randare
         private Camera _camera;
@@ -32,15 +32,19 @@ namespace Jump
         private List<Model> _blocks = new List<Model>();
         private List<Vector3> _blockPositions = new List<Vector3>();
         private List<Block> physicalBlocks = new List<Block>();
-        private Texture _blockTexture;
+
+        //rock
+        private List<Model> rocks = new List<Model>();
+        private List<Vector3> rockPositions = new List<Vector3>();
 
         // Input
         private Vector2 _lastMousePosition;
 
-
-        private float verticalSpeed = 0f;          // viteza pe axa Y
-        private float gravity = -9.8f;             // gravitația
+        private float verticalSpeed = 0f;
+        private float gravity = -9.8f;
         private bool isOnGround = false;
+        private bool wasOnGround = false;
+
         public Game(GameWindowSettings gws, NativeWindowSettings nws)
             : base(gws, nws)
         {
@@ -69,6 +73,10 @@ namespace Jump
                 _musicPlayer.PlayLooping();
             }
             catch { }
+
+            // Sunete
+            try { _jumpSound = new SoundPlayer("jump.wav"); } catch { }
+            try { _landSound = new SoundPlayer("land.wav"); } catch { }
 
             // Shader code
             string vertexShaderCode = @"#version 330 core
@@ -116,16 +124,20 @@ namespace Jump
 
             SetupScene();
 
-            // ===================== ÎNCĂRCARE MODEL 3D =====================
+            // ===================== ÎNCĂRCARE MODEL STONE =====================
             try
             {
                 Model stoneBlock = new Model("models/STONE.dae");
 
-                // adăugăm 9 blocuri pentru exemplu
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < 15; i++)
                     _blocks.Add(stoneBlock);
 
-                // pozițiile blocurilor
+                _blockPositions.Add(new Vector3(0f, -2f, -2f));
+                _blockPositions.Add(new Vector3(1f, -2f, -2f));
+                _blockPositions.Add(new Vector3(-1f, -2f, -2f));
+                _blockPositions.Add(new Vector3(0f, -2f, -1f));
+                _blockPositions.Add(new Vector3(1f, -2f, -1f));
+                _blockPositions.Add(new Vector3(-1f, -2f, -1f));
                 _blockPositions.Add(new Vector3(0f, -2f, 0f));
                 _blockPositions.Add(new Vector3(1f, -2f, 0f));
                 _blockPositions.Add(new Vector3(-1f, -2f, 0f));
@@ -136,19 +148,41 @@ namespace Jump
                 _blockPositions.Add(new Vector3(10f, 1f, 10f));
                 _blockPositions.Add(new Vector3(12f, 2f, 12f));
 
-                // ===================== BLOCURI FIZICE PENTRU COLIZIUNE =====================
                 physicalBlocks.Clear();
-                // Lava - primul bloc fizic
                 physicalBlocks.Add(new Block(new Vector3(-20f, -2f, -20f), new Vector3(40f, 1f, 40f)));
 
-                // Blocuri de piatră
-                Vector3 blockSize = new Vector3(1f, 1f, 1f); // cub de 1x1x1
+                Vector3 blockSize = new Vector3(1f, 1f, 1f);
                 foreach (var pos in _blockPositions)
                     physicalBlocks.Add(new Block(pos, blockSize));
             }
             catch (System.Exception ex)
             {
                 System.Console.WriteLine($"Failed to load STONE.dae: {ex.Message}");
+            }
+
+            // ===================== ÎNCĂRCARE MODEL ROCK =====================
+            try
+            {
+                Model rockModel = new Model("models/rock.dae");
+
+                for (int i = 0; i < 2; i++)
+                    rocks.Add(rockModel);
+
+                rockPositions.Add(new Vector3(-14f, 3f, 14f));
+                rockPositions.Add(new Vector3(14f, 3f, 14f));
+
+                float rockScale = 6f;
+                Vector3 rockSize = new Vector3(rockScale, rockScale, rockScale);
+
+                foreach (var pos in rockPositions)
+                {
+                    Vector3 collisionPos = pos - new Vector3(rockScale / 2, 0, rockScale / 2);
+                    physicalBlocks.Add(new Block(collisionPos, rockSize));
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine($"Failed to load rock.dae: {ex.Message}");
             }
         }
 
@@ -258,65 +292,66 @@ namespace Jump
             float eyeHeight = 1.6f;
             float moveSpeed = 4f * (float)e.Time;
 
-            // Gravitație și jump
+            // Jump cu sunet
             if (isOnGround && KeyboardState.IsKeyDown(Keys.Space))
             {
                 verticalSpeed = 5f;
                 isOnGround = false;
+                _jumpSound?.Play();
             }
 
             verticalSpeed += gravity * (float)e.Time;
 
-            // Vectori de mișcare orizontală (fără Y)
             Vector3 forward = Vector3.Normalize(new Vector3(_camera.Front.X, 0, _camera.Front.Z));
             Vector3 right = Vector3.Normalize(new Vector3(_camera.Right.X, 0, _camera.Right.Z));
 
-            // Calculează mișcarea totală orizontală
             Vector3 move = Vector3.Zero;
             if (KeyboardState.IsKeyDown(Keys.W)) move += forward;
             if (KeyboardState.IsKeyDown(Keys.S)) move -= forward;
             if (KeyboardState.IsKeyDown(Keys.A)) move -= right;
             if (KeyboardState.IsKeyDown(Keys.D)) move += right;
 
-            // Normalizează dacă te miști diagonal
             if (move.LengthSquared > 0)
                 move = Vector3.Normalize(move) * moveSpeed;
-
-            // Testează X
 
             Vector3 testPosX = _camera.Position + new Vector3(move.X, 0, 0);
             if (!IsCollidingWithPlayer(testPosX, playerSize, eyeHeight))
                 _camera.Position.X = testPosX.X;
 
-            // Testează Z
             Vector3 testPosZ = _camera.Position + new Vector3(0, 0, move.Z);
             if (!IsCollidingWithPlayer(testPosZ, playerSize, eyeHeight))
                 _camera.Position.Z = testPosZ.Z;
 
-            // Testează Y (gravitație)
             Vector3 testPosY = _camera.Position + new Vector3(0, verticalSpeed * (float)e.Time, 0);
             Block collidedBlock = GetCollidingBlockWithPlayer(testPosY, playerSize, eyeHeight);
 
             if (collidedBlock == null)
             {
                 _camera.Position.Y = testPosY.Y;
+                wasOnGround = isOnGround;
                 isOnGround = false;
             }
             else
             {
-                if (verticalSpeed < 0) // Cădere
+                if (verticalSpeed < 0)
                 {
                     _camera.Position.Y = collidedBlock.Position.Y + collidedBlock.Size.Y + eyeHeight;
+
+                    // Land sound - doar dacă erai în aer
+                    if (!wasOnGround)
+                        _landSound?.Play();
+
+                    wasOnGround = isOnGround;
                     isOnGround = true;
                 }
-                else // Sărire în tavan
+                else
                 {
                     _camera.Position.Y = collidedBlock.Position.Y - (playerSize.Y - eyeHeight);
+                    wasOnGround = isOnGround;
                 }
                 verticalSpeed = 0f;
             }
 
-            // Lava reset
             var lava = physicalBlocks[0];
             if (_camera.Position.Y - eyeHeight < lava.Position.Y + lava.Size.Y)
             {
@@ -325,7 +360,6 @@ namespace Jump
                 isOnGround = true;
             }
 
-            // Mouse
             Vector2 mouse = MouseState.Position;
             _camera.Yaw += (mouse.X - _lastMousePosition.X) * 0.1f;
             _camera.Pitch -= (mouse.Y - _lastMousePosition.Y) * 0.1f;
@@ -339,19 +373,17 @@ namespace Jump
             }
         }
 
-        // ÎNLOCUIEȘTE funcția IsColliding veche cu aceasta
         private bool IsCollidingWithPlayer(Vector3 cameraPos, Vector3 playerSize, float eyeHeight)
         {
             float feetY = cameraPos.Y - eyeHeight;
             float headY = cameraPos.Y + (playerSize.Y - eyeHeight);
-            float tolerance = 0.01f; // Toleranță mică
+            float tolerance = 0.01f;
 
             foreach (var block in physicalBlocks)
             {
                 bool collideX = cameraPos.X + playerSize.X / 2 >= block.Position.X &&
                                 cameraPos.X - playerSize.X / 2 <= block.Position.X + block.Size.X;
 
-                // Adaugă toleranță: ignoră blocul dacă ești EXACT pe el (nu înăuntru)
                 bool collideY = headY >= block.Position.Y + tolerance &&
                                 feetY <= block.Position.Y + block.Size.Y - tolerance;
 
@@ -407,7 +439,6 @@ namespace Jump
 
             _shader.Use();
 
-            // View și projection
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4(
                 "projection",
@@ -421,13 +452,11 @@ namespace Jump
 
             GL.BindVertexArray(_vao);
 
-            // Render lava floor cu textură
             _shader.SetMatrix4("model", Matrix4.Identity);
             _shader.SetBool("useTex", true);
-            _lavaTexture.Use();
+            _lavaTexture?.Use();
             GL.DrawArrays(PrimitiveType.Triangles, 24, 6);
 
-            // ===================== RENDER BLOCKS 3D =====================
             if (_blocks.Count > 0)
             {
                 for (int i = 0; i < _blocks.Count; i++)
@@ -447,6 +476,28 @@ namespace Jump
                     GL.DrawArrays(PrimitiveType.Triangles, 0, block.Vertices.Length / 5);
                 }
             }
+
+            if (rocks.Count > 0)
+            {
+                for (int i = 0; i < rocks.Count; i++)
+                {
+                    var rock = rocks[i];
+                    var pos = rockPositions[i];
+
+                    Matrix4 modelMatrix =
+                        Matrix4.CreateScale(6f) *
+                        Matrix4.CreateTranslation(pos);
+
+                    _shader.SetMatrix4("model", modelMatrix);
+                    _shader.SetBool("useTex", true);
+
+                    GL.ActiveTexture(TextureUnit.Texture0);
+                    _lavaTexture?.Use();
+
+                    GL.BindVertexArray(rock.VAO);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
+                }
+            }
         }
 
         private void RenderMenu()
@@ -459,7 +510,6 @@ namespace Jump
 
             GL.BindVertexArray(_vao);
 
-            // Titlu
             if (_titleTexture != null)
             {
                 _shader.SetBool("useTex", true);
@@ -469,7 +519,6 @@ namespace Jump
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
-            // Butoane
             _shader.SetBool("useTex", false);
             _shader.SetVector4("color", new Vector4(0, 0.8f, 0, 1));
             GL.DrawArrays(PrimitiveType.Triangles, 6, 6);
@@ -480,8 +529,5 @@ namespace Jump
             _shader.SetVector4("color", new Vector4(0.8f, 0, 0, 1));
             GL.DrawArrays(PrimitiveType.Triangles, 18, 6);
         }
-
-        
-
     }
 }
