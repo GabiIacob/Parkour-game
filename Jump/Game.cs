@@ -10,42 +10,34 @@ namespace Jump
 {
     class Game : GameWindow
     {
-        // ===================== STARE JOC =====================
         private bool isPlaying = false;
         private bool isMusicOn = true;
 
-        // Sunet
         private SoundPlayer _musicPlayer;
         private SoundPlayer _jumpSound;
         private SoundPlayer _landSound;
         private SoundPlayer _damageSound;
 
-        // Player
         private Player _player;
         private float _lavaTimer = 0f;
         private float _fallDamageThreshold = 10f; 
         private float _lastFallSpeed = 0f;
 
-        // Randare
         private Camera _camera;
         private Shader _shader;
         private Texture _titleTexture;
         private Texture _lavaTexture;
         private Texture _stoneTexture;
 
-        // OpenGL
         private int _vao;
 
-        // Lista de modele 3D
         private List<Model> _blocks = new List<Model>();
         private List<Vector3> _blockPositions = new List<Vector3>();
         private List<Block> physicalBlocks = new List<Block>();
 
-        //rock
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
 
-        // Particule de foc
         private class FireParticle
         {
             public Vector3 Position;
