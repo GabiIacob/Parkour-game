@@ -20,7 +20,11 @@ namespace Jump
 
         private Player _player;
         private float _lavaTimer = 0f;
+<<<<<<< HEAD
         private float _fallDamageThreshold = 10f;
+=======
+        private float _fallDamageThreshold = 10f; 
+>>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
         private float _lastFallSpeed = 0f;
 
         private Camera _camera;
@@ -28,6 +32,10 @@ namespace Jump
         private Texture _titleTexture;
         private Texture _lavaTexture;
         private Texture _stoneTexture;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
         private int _vao;
 
         private List<Model> _blocks = new List<Model>();
@@ -37,10 +45,13 @@ namespace Jump
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
 
+<<<<<<< HEAD
 
         private bool isGameOver = false;
         private float gameOverTimer = 0f;
         private float gameOverDuration = 4f;
+=======
+>>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
         private class FireParticle
         {
             public Vector3 Position;
@@ -934,5 +945,9 @@ namespace Jump
             GL.Enable(EnableCap.DepthTest);
         }
     }
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
