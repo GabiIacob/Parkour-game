@@ -10,42 +10,37 @@ namespace Jump
 {
     class Game : GameWindow
     {
-        // ===================== STARE JOC =====================
         private bool isPlaying = false;
         private bool isMusicOn = true;
 
-        // Sunet
         private SoundPlayer _musicPlayer;
         private SoundPlayer _jumpSound;
         private SoundPlayer _landSound;
         private SoundPlayer _damageSound;
 
-        // Player
         private Player _player;
         private float _lavaTimer = 0f;
-        private float _fallDamageThreshold = 10f; // Viteza la care primești damage
+        private float _fallDamageThreshold = 10f;
         private float _lastFallSpeed = 0f;
 
-        // Randare
         private Camera _camera;
         private Shader _shader;
         private Texture _titleTexture;
         private Texture _lavaTexture;
         private Texture _stoneTexture;
-
-        // OpenGL
         private int _vao;
 
-        // Lista de modele 3D
         private List<Model> _blocks = new List<Model>();
         private List<Vector3> _blockPositions = new List<Vector3>();
         private List<Block> physicalBlocks = new List<Block>();
 
-        //rock
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
 
-        // Particule de foc
+
+        private bool isGameOver = false;
+        private float gameOverTimer = 0f;
+        private float gameOverDuration = 4f;
         private class FireParticle
         {
             public Vector3 Position;
@@ -56,7 +51,6 @@ namespace Jump
         private List<FireParticle> fireParticles = new List<FireParticle>();
         private Random random = new Random();
 
-        // Input
         private Vector2 _lastMousePosition;
 
         private float verticalSpeed = 0f;
@@ -80,7 +74,7 @@ namespace Jump
                 BlendingFactor.OneMinusSrcAlpha
             );
 
-            _camera = new Camera(new Vector3(0, 0, 8));
+            _camera = new Camera(new Vector3(0, 0, 0));
 
             _player = new Player(100);
 
@@ -91,12 +85,19 @@ namespace Jump
             }
             catch { }
 
-            // Sunete
-            try { _jumpSound = new SoundPlayer("jump.wav"); } catch { }
-            try { _landSound = new SoundPlayer("land.wav"); } catch { }
-            try { _damageSound = new SoundPlayer("damage.wav"); } catch { }
+            try { 
+                _jumpSound = new SoundPlayer("jump.wav");
+            } 
+            catch { }
+            try { 
+                _landSound = new SoundPlayer("land.wav");
+            } 
+            catch { }
+            try { 
+                _damageSound = new SoundPlayer("damage.wav"); 
+            } 
+            catch { }
 
-            // Shader code
             string vertexShaderCode = @"#version 330 core
                 layout (location = 0) in vec3 aPos;
                 layout (location = 1) in vec2 aTex;
@@ -146,9 +147,9 @@ namespace Jump
             {
                 Model stoneBlock = new Model("models/STONE.dae");
 
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i <30; i++)
                     _blocks.Add(stoneBlock);
-
+                //baza
                 _blockPositions.Add(new Vector3(0f, -2f, -2f));
                 _blockPositions.Add(new Vector3(1f, -2f, -2f));
                 _blockPositions.Add(new Vector3(-1f, -2f, -2f));
@@ -158,19 +159,75 @@ namespace Jump
                 _blockPositions.Add(new Vector3(0f, -2f, 0f));
                 _blockPositions.Add(new Vector3(1f, -2f, 0f));
                 _blockPositions.Add(new Vector3(-1f, -2f, 0f));
+
+
+                //parkour
                 _blockPositions.Add(new Vector3(2f, -1f, 2f));
                 _blockPositions.Add(new Vector3(4f, 0f, 4f));
-                _blockPositions.Add(new Vector3(6f, -1f, 6f));
-                _blockPositions.Add(new Vector3(8f, 0f, 8f));
-                _blockPositions.Add(new Vector3(10f, 1f, 10f));
-                _blockPositions.Add(new Vector3(12f, 2f, 12f));
+                _blockPositions.Add(new Vector3(6f, 1f, 6f));
+                _blockPositions.Add(new Vector3(8f, 2f, 8f));
+                _blockPositions.Add(new Vector3(10f, 3f, 10f));
+                _blockPositions.Add(new Vector3(12f, 3f, 10f));
+                _blockPositions.Add(new Vector3(12f, 4f, 8f));
+
+                _blockPositions.Add(new Vector3(12f, 4f, 10f));
+
+                _blockPositions.Add(new Vector3(14f, 5f, 12f));
+
+                _blockPositions.Add(new Vector3(14f, 6f, 14f));
+
+
+
+
+
+
+
+
+                _blockPositions.Add(new Vector3(12f, 7f, 18f));
+                _blockPositions.Add(new Vector3(11f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(10f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(9f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(8f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(7f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(6f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(5f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(4f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(3f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(2f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(1f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(0f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(-1f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(-2f, 7f, 18f));
+
+                _blockPositions.Add(new Vector3(-3f, 7f, 18f));
+
+
+
 
                 physicalBlocks.Clear();
                 physicalBlocks.Add(new Block(new Vector3(-20f, -2f, -20f), new Vector3(40f, 1f, 40f)));
 
                 Vector3 blockSize = new Vector3(1f, 1f, 1f);
-                foreach (var pos in _blockPositions)
-                    physicalBlocks.Add(new Block(pos, blockSize));
+                for (int i = 0; i < _blockPositions.Count; i++)
+                {
+                    Vector3 size = new Vector3(1f, 1f, 1f);
+
+                    
+                    physicalBlocks.Add(new Block(_blockPositions[i], size));
+                }
             }
             catch (System.Exception ex)
             {
@@ -188,6 +245,10 @@ namespace Jump
                 rockPositions.Add(new Vector3(14f, 3f, 14f));
                 rockPositions.Add(new Vector3(14f, 3f, -14f));
                 rockPositions.Add(new Vector3(-14f, 3f, -14f));
+
+
+
+
 
                 float rockScale = 6f;
                 Vector3 rockSize = new Vector3(rockScale, rockScale, rockScale);
@@ -252,9 +313,12 @@ namespace Jump
             _vao = GL.GenVertexArray();
             int vbo = GL.GenBuffer();
 
+
+
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(
+
                 BufferTarget.ArrayBuffer,
                 vertices.Length * sizeof(float),
                 vertices,
@@ -266,9 +330,18 @@ namespace Jump
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             GL.EnableVertexAttribArray(1);
 
-            try { _titleTexture = Texture.LoadFromFile("game_title.png"); } catch { }
-            try { _lavaTexture = Texture.LoadFromFile("lava.png"); } catch { }
-            try { _stoneTexture = Texture.LoadFromFile("stone.png"); } catch { }
+            try {
+                _titleTexture = Texture.LoadFromFile("game_title.png"); 
+            } 
+            catch { }
+            try { 
+                _lavaTexture = Texture.LoadFromFile("lava.png");
+            } 
+            catch { }
+            try {
+                _stoneTexture = Texture.LoadFromFile("stone.png"); 
+            } 
+            catch { }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -297,8 +370,10 @@ namespace Jump
             }
             else if (mouse.Y >= cy - 50 && mouse.Y <= cy + 50)
             {
-                if (isMusicOn) _musicPlayer?.Stop();
-                else _musicPlayer?.PlayLooping();
+                if (isMusicOn) 
+                    _musicPlayer?.Stop();
+                else
+                    _musicPlayer?.PlayLooping();
                 isMusicOn = !isMusicOn;
             }
             else if (mouse.Y >= cy + 100 && mouse.Y <= cy + 250)
@@ -309,6 +384,25 @@ namespace Jump
 
         private void HandleGameInput(FrameEventArgs e)
         {
+            if (isGameOver)
+            {
+                gameOverTimer += (float)e.Time;
+                if (gameOverTimer >= gameOverDuration)
+                {
+                    isPlaying = false;
+                    isGameOver = false;
+                    gameOverTimer = 0f;
+                    CursorState = CursorState.Normal;
+
+                    _camera.Position = new Vector3(0f, 1.6f, 0f);
+                    verticalSpeed = 0f;
+                    isOnGround = true;
+                    _player = new Player(100);
+                    _lavaTimer = 0f;
+
+                }
+                return;
+            }
             Vector3 playerSize = new Vector3(0.5f, 1.8f, 0.5f);
             float eyeHeight = 1.6f;
             float moveSpeed = 4f * (float)e.Time;
@@ -320,20 +414,25 @@ namespace Jump
             if (isInLava)
             {
                 _lavaTimer += (float)e.Time;
-                if (_lavaTimer >= 5f)
+                if (_lavaTimer >= 2.5f)
                 {
-                    _player.TakeDmg(10);
+                    _player.TakeDmg(25);
                     _damageSound?.Play();
+                    float shakeAmount = 20f; 
+                    _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);
+                    _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount);
+                    _camera.UpdateVectors();
+
                     System.Console.WriteLine($"Lava damage! Health: {_player.health}");
                     _lavaTimer = 0f;
 
                     if (_player.health <= 0)
                     {
-                        _camera.Position = new Vector3(0f, eyeHeight, 0f);
-                        verticalSpeed = 0f;
-                        isOnGround = true;
-                        _player = new Player(100);
-                        System.Console.WriteLine("Player died! Respawning...");
+                        isGameOver = true;
+                        gameOverTimer = 0f;
+                        _damageSound?.Play();
+                        System.Console.WriteLine("GAME OVER!");
+                        return;
                     }
                 }
             }
@@ -356,6 +455,9 @@ namespace Jump
 
             Vector3 move = Vector3.Zero;
             if (KeyboardState.IsKeyDown(Keys.W)) move += forward;
+
+
+
             if (KeyboardState.IsKeyDown(Keys.S)) move -= forward;
             if (KeyboardState.IsKeyDown(Keys.A)) move -= right;
             if (KeyboardState.IsKeyDown(Keys.D)) move += right;
@@ -364,6 +466,7 @@ namespace Jump
                 move = Vector3.Normalize(move) * moveSpeed;
 
             Vector3 testPosX = _camera.Position + new Vector3(move.X, 0, 0);
+
             if (!IsCollidingWithPlayer(testPosX, playerSize, eyeHeight))
                 _camera.Position.X = testPosX.X;
 
@@ -391,22 +494,25 @@ namespace Jump
                     {
                         int fallDamage = (int)((-_lastFallSpeed - _fallDamageThreshold) * 2);
                         _player.TakeDmg(fallDamage);
+                        _landSound?.Play();
+
                         _damageSound?.Play();
+                        float shakeAmount = 20f; 
+                        _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);   
+                        _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount); 
+                        _camera.UpdateVectors();
                         System.Console.WriteLine($"Fall damage: {fallDamage}! Health: {_player.health}");
 
                         if (_player.health <= 0)
                         {
-                            _camera.Position = new Vector3(0f, eyeHeight, 0f);
-                            verticalSpeed = 0f;
-                            isOnGround = true;
-                            _player = new Player(100);
-                            System.Console.WriteLine("Player died from fall! Respawning...");
+                            isGameOver = true;
+                            gameOverTimer = 0f;
+                            _damageSound?.Play();
+                            System.Console.WriteLine("GAME OVER!");
                             return;
                         }
                     }
 
-                    if (!wasOnGround)
-                        _landSound?.Play();
 
                     wasOnGround = isOnGround;
                     isOnGround = true;
@@ -449,6 +555,10 @@ namespace Jump
 
             foreach (var block in physicalBlocks)
             {
+
+
+
+
                 bool collideX = cameraPos.X + playerSize.X / 2 >= block.Position.X &&
                                 cameraPos.X - playerSize.X / 2 <= block.Position.X + block.Size.X;
 
@@ -457,6 +567,10 @@ namespace Jump
 
                 bool collideZ = cameraPos.Z + playerSize.Z / 2 >= block.Position.Z &&
                                 cameraPos.Z - playerSize.Z / 2 <= block.Position.Z + block.Size.Z;
+
+
+
+
 
                 if (collideX && collideY && collideZ)
                 {
@@ -474,8 +588,15 @@ namespace Jump
 
             foreach (var block in physicalBlocks)
             {
+
+
+
+
                 bool collideX = cameraPos.X + playerSize.X / 2 >= block.Position.X &&
                                 cameraPos.X - playerSize.X / 2 <= block.Position.X + block.Size.X;
+
+
+
                 bool collideY = headY >= block.Position.Y &&
                                 feetY <= block.Position.Y + block.Size.Y;
                 bool collideZ = cameraPos.Z + playerSize.Z / 2 >= block.Position.Z &&
@@ -484,6 +605,8 @@ namespace Jump
                 if (collideX && collideY && collideZ)
                     return block;
             }
+
+
 
             return null;
         }
@@ -499,13 +622,10 @@ namespace Jump
                     fireParticles.Add(new FireParticle
                     {
                         Position = new Vector3(
-                            (float)(random.NextDouble() * 40 - 20), // X random pe lava
-                            -1.9f,                                   // Deasupra lavei
-                            (float)(random.NextDouble() * 40 - 20)  // Z random pe lava
-                        ),
+                            (float)(random.NextDouble() * 40 - 20), -1.9f,(float)(random.NextDouble() * 40 - 20)),
                         Velocity = new Vector3(
-                            (float)(random.NextDouble() * 0.5 - 0.25), // Drift ușor
-                            (float)(random.NextDouble() * 2 + 1),      // sus
+                            (float)(random.NextDouble() * 0.5 - 0.25), 
+                            (float)(random.NextDouble() * 2 + 1),      
                             (float)(random.NextDouble() * 0.5 - 0.25)
                         ),
                         Life = 1f,
@@ -538,6 +658,8 @@ namespace Jump
                 Vector4 color;
 
                 
+
+
                 if (p.Life > 0.7f)
                     color = new Vector4(1f, 1f, 0.3f, alpha); 
                 else if (p.Life > 0.3f)
@@ -565,12 +687,54 @@ namespace Jump
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             _shader.Use();
 
-            if (isPlaying) RenderGame();
-            else RenderMenu();
+            if (isPlaying)
+            {
+                if (isGameOver)
+                    RenderGameOver();
+                else
+                    RenderGame();
+            }
+            else
+                RenderMenu();
+
+
 
             SwapBuffers();
         }
+        private void RenderGameOver()
+        {
+            RenderGame();
 
+            GL.Disable(EnableCap.DepthTest);
+            _shader.Use();
+            _shader.SetMatrix4("model", Matrix4.Identity);
+            _shader.SetMatrix4("view", Matrix4.Identity);
+            _shader.SetMatrix4("projection", Matrix4.Identity);
+            _shader.SetBool("useTex", false);
+
+            float[] overlay = {
+                -1f, -1f, 0, 0, 0,
+                 1f, -1f, 0, 0, 0,
+                 1f,  1f, 0, 0, 0,
+                 1f,  1f, 0, 0, 0,
+                 -1f,  1f, 0, 0, 0,
+                 -1f, -1f, 0, 0, 0};
+
+            int vao = GL.GenVertexArray();
+            int vbo = GL.GenBuffer();
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, overlay.Length * sizeof(float), overlay, BufferUsageHint.DynamicDraw);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
+
+            _shader.SetVector4("color", new Vector4(0.5f, 0.5f, 0.5f, 0.6f));
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            GL.DeleteBuffer(vbo);
+            GL.DeleteVertexArray(vao);
+            GL.Enable(EnableCap.DepthTest);
+        }
         private void RenderGame()
         {
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1f);
@@ -580,6 +744,7 @@ namespace Jump
 
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4(
+
                 "projection",
                 Matrix4.CreatePerspectiveFieldOfView(
                     MathHelper.DegreesToRadians(45f),
@@ -600,6 +765,7 @@ namespace Jump
             {
                 for (int i = 0; i < _blocks.Count; i++)
                 {
+
                     var block = _blocks[i];
                     var pos = _blockPositions[i];
 
@@ -637,6 +803,12 @@ namespace Jump
                         Matrix4.CreateScale(6f) *
                         Matrix4.CreateTranslation(pos);
 
+
+
+
+
+
+
                     _shader.SetMatrix4("model", modelMatrix);
                     _shader.SetBool("useTex", true);
 
@@ -649,10 +821,14 @@ namespace Jump
             }
 
             RenderFireParticles();
+            RenderHealthBar();
+
         }
 
         private void RenderMenu()
         {
+
+
             GL.ClearColor(0.2f, 0.2f, 0.2f, 1f);
 
             _shader.SetMatrix4("model", Matrix4.Identity);
@@ -680,5 +856,83 @@ namespace Jump
             _shader.SetVector4("color", new Vector4(0.8f, 0, 0, 1));
             GL.DrawArrays(PrimitiveType.Triangles, 18, 6);
         }
+        private void RenderHealthBar()
+        {
+            GL.Disable(EnableCap.DepthTest);
+
+            _shader.Use();
+            _shader.SetMatrix4("model", Matrix4.Identity);
+            _shader.SetMatrix4("view", Matrix4.Identity);
+            _shader.SetMatrix4("projection", Matrix4.Identity);
+            _shader.SetBool("useTex", false);
+
+            float[] healthBarBg = {
+                -0.95f, 0.85f, 0,  0, 0,
+                -0.35f, 0.85f, 0,  0, 0,
+                -0.35f, 0.95f, 0,  0, 0,
+                -0.35f, 0.95f, 0,  0, 0,
+                -0.95f, 0.95f, 0,  0, 0,
+                -0.95f, 0.85f, 0,  0, 0
+    };
+
+            int vao = GL.GenVertexArray();
+            int vbo = GL.GenBuffer();
+
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, healthBarBg.Length * sizeof(float),
+                          healthBarBg, BufferUsageHint.DynamicDraw);
+
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
+
+            _shader.SetVector4("color", new Vector4(0.3f, 0, 0, 1));
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            float healthPercent = _player.health / 100f;
+            float barWidth = 0.6f * healthPercent;
+
+            float[] healthBarFill = {
+                -0.95f, 0.85f, 0,  0, 0,
+                -0.95f + barWidth, 0.85f, 0,  0, 0,
+                -0.95f + barWidth, 0.95f, 0,  0, 0,
+                -0.95f + barWidth, 0.95f, 0,  0, 0,
+                -0.95f, 0.95f, 0,  0, 0,
+                -0.95f, 0.85f, 0,  0, 0
+    };
+
+            GL.BufferData(BufferTarget.ArrayBuffer, healthBarFill.Length * sizeof(float),
+                          healthBarFill, BufferUsageHint.DynamicDraw);
+
+            Vector4 healthColor;
+            if (healthPercent > 0.6f)
+                healthColor = new Vector4(0, 0.8f, 0, 1);      
+            else if (healthPercent > 0.3f)
+                healthColor = new Vector4(0.9f, 0.9f, 0, 1);   
+            else
+                healthColor = new Vector4(0.9f, 0, 0, 1);      
+
+            _shader.SetVector4("color", healthColor);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            float[] healthBarOutline = {
+                -0.95f, 0.85f, 0,  0, 0,
+                 -0.35f, 0.85f, 0,  0, 0,
+                  -0.35f, 0.95f, 0,  0, 0,
+                -0.95f, 0.95f, 0,  0, 0
+    };
+
+            GL.BufferData(BufferTarget.ArrayBuffer, healthBarOutline.Length * sizeof(float),
+                          healthBarOutline, BufferUsageHint.DynamicDraw);
+
+            _shader.SetVector4("color", new Vector4(1, 1, 1, 1));
+            GL.DrawArrays(PrimitiveType.LineLoop, 0, 4);
+
+            GL.DeleteBuffer(vbo);
+            GL.DeleteVertexArray(vao);
+
+            GL.Enable(EnableCap.DepthTest);
+        }
     }
+
 }
