@@ -20,11 +20,7 @@ namespace Jump
 
         private Player _player;
         private float _lavaTimer = 0f;
-<<<<<<< HEAD
         private float _fallDamageThreshold = 10f;
-=======
-        private float _fallDamageThreshold = 10f; 
->>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
         private float _lastFallSpeed = 0f;
 
         private Camera _camera;
@@ -32,10 +28,7 @@ namespace Jump
         private Texture _titleTexture;
         private Texture _lavaTexture;
         private Texture _stoneTexture;
-<<<<<<< HEAD
-=======
-
->>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
+        private Texture _lavamoonTexture;
         private int _vao;
 
         private List<Model> _blocks = new List<Model>();
@@ -44,14 +37,13 @@ namespace Jump
 
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
+        private Model lavamoon;
+        private List<Vector3> lavamoonPositions = new List<Vector3>();
 
-<<<<<<< HEAD
 
         private bool isGameOver = false;
         private float gameOverTimer = 0f;
         private float gameOverDuration = 4f;
-=======
->>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
         private class FireParticle
         {
             public Vector3 Position;
@@ -108,6 +100,12 @@ namespace Jump
                 _damageSound = new SoundPlayer("damage.wav"); 
             } 
             catch { }
+            try
+            {
+                _lavamoonTexture = Texture.LoadFromFile("lavamoon.png");
+            }
+            catch { }
+
 
             string vertexShaderCode = @"#version 330 core
                 layout (location = 0) in vec3 aPos;
@@ -245,6 +243,16 @@ namespace Jump
                 System.Console.WriteLine($"Failed to load STONE.dae: {ex.Message}");
             }
 
+            try
+            {
+                Model lavamooon= new Model("models/lavamoon.dae");
+                lavamoon = lavamooon;
+                lavamoonPositions.Add(new Vector3(0f, 8f, -12f));
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine($"Failed to load lavamoon.dae: {ex.Message}");
+            }
             try
             {
                 Model rockModel = new Model("models/rock.dae");
@@ -830,6 +838,26 @@ namespace Jump
                     GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
                 }
             }
+            if (lavamoon != null)
+            {
+                for (int i = 0; i < lavamoonPositions.Count; i++)
+                {
+                    var pos = lavamoonPositions[i];
+
+                    Matrix4 modelMatrix =
+                        
+                        Matrix4.CreateTranslation(pos)* Matrix4.CreateScale(6f)  ;
+
+                    _shader.SetMatrix4("model", modelMatrix);
+                    _shader.SetBool("useTex", true);
+
+                    GL.ActiveTexture(TextureUnit.Texture0);
+                    _lavamoonTexture?.Use(); 
+
+                    GL.BindVertexArray(lavamoon.VAO);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, lavamoon.Vertices.Length / 5);
+                }
+            }
 
             RenderFireParticles();
             RenderHealthBar();
@@ -945,9 +973,5 @@ namespace Jump
             GL.Enable(EnableCap.DepthTest);
         }
     }
-<<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> 31fc40ac40d5b3857b4d4a1b035bba553b627226
