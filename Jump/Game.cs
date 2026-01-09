@@ -5,38 +5,49 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Media;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Jump
 {
     class Game : GameWindow
     {
+        //stari joc
         private bool isPlaying = false;
         private bool isMusicOn = true;
 
+
+        //muzica
         private SoundPlayer _musicPlayer;
         private SoundPlayer _jumpSound;
         private SoundPlayer _landSound;
         private SoundPlayer _damageSound;
 
+        //jucator
         private Player _player;
         private float _lavaTimer = 0f;
         private float _fallDamageThreshold = 10f;
         private float _lastFallSpeed = 0f;
 
+        //camera si texturi
         private Camera _camera;
         private Shader _shader;
         private Texture _titleTexture;
         private Texture _lavaTexture;
         private Texture _stoneTexture;
         private Texture _lavamoonTexture;
+        private Texture _coalTexture;
         private int _vao;
 
+        //modele pozitii si coliziuni
         private List<Model> _blocks = new List<Model>();
         private List<Vector3> _blockPositions = new List<Vector3>();
         private List<Block> physicalBlocks = new List<Block>();
 
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
+
+        private List<Model> _coal= new List<Model>();
+        private List<Vector3> _coalPositions = new List<Vector3>();
         private Model lavamoon;
         private List<Vector3> lavamoonPositions = new List<Vector3>();
 
@@ -60,6 +71,19 @@ namespace Jump
         private float gravity = -9.8f;
         private bool isOnGround = false;
         private bool wasOnGround = false;
+
+
+        private float _lavamoonRotation = 0f;
+
+
+        private float _healthRegenTimer = 0f;
+        private float _healthRegenInterval = 10f; 
+        private int _healthRegenAmount = 10;
+
+
+
+        private float coalSpawnTimer = 0f;
+        private float coalSpawnInterval = 20f;
 
         public Game(GameWindowSettings gws, NativeWindowSettings nws)
             : base(gws, nws)
@@ -276,11 +300,31 @@ namespace Jump
             {
                 Model lavamooon= new Model("models/lavamoon.dae");
                 lavamoon = lavamooon;
-                lavamoonPositions.Add(new Vector3(0f, 8f, -12f));
+                lavamoonPositions.Add(new Vector3(0f, 12f, -32f));
             }
             catch (System.Exception ex)
             {
                 System.Console.WriteLine($"Failed to load lavamoon.dae: {ex.Message}");
+            }
+
+            try
+            {
+                Model coalModel = new Model("models/coal.dae");
+                _coal.Add(coalModel);
+
+                Vector3 coalPos = new Vector3(-10f, -0.5f, -10f);
+                _coalPositions.Add(coalPos);
+
+                Vector3 coalSize = new Vector3(1.5f, 1.5f, 1.5f);
+
+                Vector3 collisionPos = coalPos - new Vector3(coalSize.X / 2, 0, coalSize.Z / 2);
+
+                // Adaugă blocul fizic pentru coliziune
+                physicalBlocks.Add(new Block(collisionPos, coalSize));
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine($"Failed to load coal.dae: {ex.Message}");
             }
             try
             {
@@ -379,7 +423,7 @@ namespace Jump
             GL.EnableVertexAttribArray(1);
 
             try {
-                _titleTexture = Texture.LoadFromFile("game_title2.png"); 
+                _titleTexture = Texture.LoadFromFile("game_title.png"); 
             } 
             catch { }
             try { 
@@ -390,15 +434,23 @@ namespace Jump
                 _stoneTexture = Texture.LoadFromFile("stone.png"); 
             } 
             catch { }
+            try
+            {
+                _coalTexture= Texture.LoadFromFile("coal.png");
+            }
+            catch { }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            if (!isPlaying) HandleMenuInput();
+            if (!isPlaying) 
+                HandleMenuInput();
             else
             {
                 HandleGameInput(e);
                 UpdateFireParticles(e);
+                _lavamoonRotation += (float)e.Time;
+
             }
         }
 
@@ -432,6 +484,32 @@ namespace Jump
 
         private void HandleGameInput(FrameEventArgs e)
         {
+            if (isPlaying && !isGameOver)
+            {
+                coalSpawnTimer += (float)e.Time;
+                if (coalSpawnTimer >= coalSpawnInterval)
+                {
+                    SpawnRandomCoal();
+                    coalSpawnTimer = 0f;
+                }
+            }
+
+            // HP-regen
+            if (!isGameOver && _player.health > 0 && _player.health < 100)
+            {
+                _healthRegenTimer += (float)e.Time;
+
+                if (_healthRegenTimer >= _healthRegenInterval)
+                {
+                    _player.health += _healthRegenAmount;
+
+                    if (_player.health > 100)
+                        _player.health = 100;
+
+                    _healthRegenTimer = 0f;
+                }
+            }
+
             if (isGameOver)
             {
                 gameOverTimer += (float)e.Time;
@@ -441,6 +519,7 @@ namespace Jump
                     isGameOver = false;
                     gameOverTimer = 0f;
                     CursorState = CursorState.Normal;
+                    _healthRegenTimer = 0f;
 
                     _camera.Position = new Vector3(0f, 1.6f, 0f);
                     verticalSpeed = 0f;
@@ -465,6 +544,8 @@ namespace Jump
                 if (_lavaTimer >= 2.5f)
                 {
                     _player.TakeDmg(25);
+                    _healthRegenTimer = 0f;
+
                     _damageSound?.Play();
                     float shakeAmount = 20f; 
                     _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);
@@ -543,6 +624,7 @@ namespace Jump
                         int fallDamage = (int)((-_lastFallSpeed - _fallDamageThreshold) * 2);
                         _player.TakeDmg(fallDamage);
                         _landSound?.Play();
+                        _healthRegenTimer = 0f;
 
                         _damageSound?.Play();
                         float shakeAmount = 20f; 
@@ -795,7 +877,7 @@ namespace Jump
 
                 "projection",
                 Matrix4.CreatePerspectiveFieldOfView(
-                    MathHelper.DegreesToRadians(45f),
+                    MathHelper.DegreesToRadians(60f),
                     Size.X / (float)Size.Y,
                     0.1f,
                     100f
@@ -874,8 +956,8 @@ namespace Jump
                     var pos = lavamoonPositions[i];
 
                     Matrix4 modelMatrix =
-                        
-                        Matrix4.CreateTranslation(pos)* Matrix4.CreateScale(6f)  ;
+
+                        Matrix4.CreateScale(1f) * Matrix4.CreateRotationY(_lavamoonRotation) * Matrix4.CreateTranslation(pos);
 
                     _shader.SetMatrix4("model", modelMatrix);
                     _shader.SetBool("useTex", true);
@@ -888,6 +970,27 @@ namespace Jump
                 }
             }
 
+            if (_coal.Count > 0)
+            {
+                for (int i = 0; i < _coal.Count; i++)
+                {
+                    var coal = _coal[i];
+                    var pos = _coalPositions[i];
+
+                    Matrix4 modelMatrix =
+                        Matrix4.CreateScale(1.5f) *
+                        Matrix4.CreateTranslation(pos);
+
+                    _shader.SetMatrix4("model", modelMatrix);
+                    _shader.SetBool("useTex", true);
+
+                    GL.ActiveTexture(TextureUnit.Texture0);
+                    _coalTexture?.Use(); 
+
+                    GL.BindVertexArray(coal.VAO);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, coal.Vertices.Length / 5);
+                }
+            }
             RenderFireParticles();
             RenderHealthBar();
 
@@ -1001,6 +1104,39 @@ namespace Jump
 
             GL.Enable(EnableCap.DepthTest);
         }
+        private void SpawnRandomCoal()
+        {
+            try
+            {
+                Model coalModel;
+                if (_coal.Count > 0)
+                    coalModel = _coal[0];
+                else
+                {
+                    coalModel = new Model("models/coal.dae");
+                    _coal.Add(coalModel);
+                }
+
+                float x = (float)(random.NextDouble() * 40 - 20);
+                float z = (float)(random.NextDouble() * 40 - 20);
+                float y = -0.5f; 
+
+                Vector3 pos = new Vector3(x, y, z);
+
+                _coal.Add(coalModel);
+                _coalPositions.Add(pos);
+
+                Vector3 coalSize = new Vector3(1.5f, 1.5f, 1.5f);
+                Vector3 collisionPos = pos - new Vector3(coalSize.X / 2, 0, coalSize.Z / 2);
+                physicalBlocks.Add(new Block(collisionPos, coalSize));
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine($"Failed to spawn coal: {ex.Message}");
+            }
+        }
+
+
     }
 
 }
