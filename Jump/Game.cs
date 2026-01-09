@@ -176,14 +176,43 @@ namespace Jump
                 _blockPositions.Add(new Vector3(6f, 1f, 6f));
                 _blockPositions.Add(new Vector3(8f, 2f, 8f));
                 _blockPositions.Add(new Vector3(10f, 3f, 10f));
-                _blockPositions.Add(new Vector3(12f, 3f, 10f));
                 _blockPositions.Add(new Vector3(12f, 4f, 8f));
 
-                _blockPositions.Add(new Vector3(12f, 4f, 10f));
+                
 
-                _blockPositions.Add(new Vector3(14f, 5f, 12f));
+                _blockPositions.Add(new Vector3(11f, 5f, 5f));
 
-                _blockPositions.Add(new Vector3(14f, 6f, 14f));
+                _blockPositions.Add(new Vector3(8f, 2f, 0f));
+
+                _blockPositions.Add(new Vector3(10f, 3f, -3f));
+
+                _blockPositions.Add(new Vector3(6f, 4f, -2f));
+
+                _blockPositions.Add(new Vector3(6f, 5f, -4f));
+
+                _blockPositions.Add(new Vector3(10f, 6f, -4f));
+
+                _blockPositions.Add(new Vector3(9f, 7f, -7f));
+                _blockPositions.Add(new Vector3(13f, 7f, -10));
+                _blockPositions.Add(new Vector3(13f, 8f, -13f));
+
+                _blockPositions.Add(new Vector3(13f, 9f, -16f));
+
+
+                _blockPositions.Add(new Vector3(9f, 9f, -16f));
+
+                _blockPositions.Add(new Vector3(5f, 9f, -16f));
+                _blockPositions.Add(new Vector3(0f, 9f, -16f));
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,7 +379,7 @@ namespace Jump
             GL.EnableVertexAttribArray(1);
 
             try {
-                _titleTexture = Texture.LoadFromFile("game_title.png"); 
+                _titleTexture = Texture.LoadFromFile("game_title2.png"); 
             } 
             catch { }
             try { 
