@@ -1140,3 +1140,102 @@ namespace Jump
     }
 
 }
+
+/*
+ private class CoalParticle
+{
+    public Vector3 Position;
+    public Vector3 Velocity;
+    public float Life;
+    public float Size;
+}
+
+private List<CoalParticle> coalParticles = new List<CoalParticle>();
+
+private void TryBreakCoal()
+{
+    float playerReach = 2f;
+    Vector3 playerPos = _camera.Position;
+
+    for (int i = _coalPositions.Count - 1; i >= 0; i--)
+    {
+        Vector3 coalPos = _coalPositions[i];
+        if ((coalPos - playerPos).Length < playerReach)
+        {
+            _coalPositions.RemoveAt(i);
+            _coal.RemoveAt(i);
+
+            Block toRemove = physicalBlocks.FirstOrDefault(b =>
+                (b.Position + b.Size / 2 - coalPos).Length < 1f);
+            if (toRemove != null)
+                physicalBlocks.Remove(toRemove);
+
+            SpawnCoalParticles(coalPos);
+
+            _player.health = Math.Min(_player.health + 10, 100);
+
+            _damageSound?.Play();
+
+            break;
+        }
+    }
+}
+
+private void SpawnCoalParticles(Vector3 position)
+{
+    Random rand = new Random();
+    for (int i = 0; i < 10; i++)
+    {
+        coalParticles.Add(new CoalParticle
+        {
+            Position = position,
+            Velocity = new Vector3(
+                (float)(rand.NextDouble() * 2 - 1),
+                (float)(rand.NextDouble() * 2),
+                (float)(rand.NextDouble() * 2 - 1)
+            ),
+            Life = 1f,
+            Size = (float)(rand.NextDouble() * 0.3 + 0.2)
+        });
+    }
+}
+
+private void UpdateCoalParticles(FrameEventArgs e)
+{
+    float deltaTime = (float)e.Time;
+    for (int i = coalParticles.Count - 1; i >= 0; i--)
+    {
+        var p = coalParticles[i];
+        p.Position += p.Velocity * deltaTime;
+        p.Velocity.Y -= 0.5f * deltaTime;
+        p.Life -= deltaTime;
+        if (p.Life <= 0)
+            coalParticles.RemoveAt(i);
+    }
+}
+
+private void RenderCoalParticles()
+{
+    GL.Enable(EnableCap.Blend);
+    GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One);
+
+    foreach (var p in coalParticles)
+    {
+        float alpha = p.Life;
+        Vector4 color = new Vector4(0.2f, 0.2f, 0.2f, alpha);
+
+        Matrix4 modelMatrix = Matrix4.CreateScale(p.Size) *
+                              Matrix4.CreateTranslation(p.Position);
+
+        _shader.SetMatrix4("model", modelMatrix);
+        _shader.SetBool("useTex", false);
+        _shader.SetVector4("color", color);
+
+        GL.BindVertexArray(_vao);
+        GL.DrawArrays(PrimitiveType.Triangles, 6, 6);
+    }
+
+    GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+}
+
+ */
