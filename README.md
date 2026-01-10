@@ -1,5 +1,6 @@
 # Parkour-game
 next to do
-advanced gameplay
-reset central zone
-damage taken
+UI buttons replacement
+Game ending 
+Coal superpowers 
+
