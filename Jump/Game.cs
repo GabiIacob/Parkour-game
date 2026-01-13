@@ -37,6 +37,7 @@ namespace Jump
         private Texture _lavamoonTexture;
         private Texture _coalTexture;
         private Texture _controlsTexture;
+        private Texture _buttonTexture;
 
         private int _vao;
 
@@ -52,11 +53,19 @@ namespace Jump
         private List<Vector3> _coalPositions = new List<Vector3>();
         private Model lavamoon;
         private List<Vector3> lavamoonPositions = new List<Vector3>();
-
+        private Model button;
+        private List<Vector3> buttonPositions = new List<Vector3>();
 
         private bool isGameOver = false;
         private float gameOverTimer = 0f;
         private float gameOverDuration = 4f;
+
+        //animatie buton
+        private bool buttonPressed = false;
+        private float buttonPressTime = 0f;
+        private float buttonPressDuration = 0.2f; 
+        private float buttonScale = 0.2f; 
+        private float buttonCurrentScale = 0.2f;
         private class FireParticle
         {
             public Vector3 Position;
@@ -136,6 +145,12 @@ namespace Jump
             catch { }
             try
             {
+                _buttonTexture = Texture.LoadFromFile("button.png");
+                
+            }
+            catch (Exception ex) { Console.WriteLine("Nu am putut încărca button.png: " + ex.Message); }
+            try
+            {
                 _controlsTexture = Texture.LoadFromFile("controls.png");
             }
             catch
@@ -192,7 +207,7 @@ namespace Jump
             {
                 Model stoneBlock = new Model("models/STONE.dae");
 
-                for (int i = 0; i < 43; i++)
+                for (int i = 0; i < 44; i++)
                     _blocks.Add(stoneBlock);
                 //baza
                 _blockPositions.Add(new Vector3(0f, -2f, -2f));
@@ -258,6 +273,8 @@ namespace Jump
                 _blockPositions.Add(new Vector3(-12f, 11f, 8f));
                 _blockPositions.Add(new Vector3(-11f, 11f, 8f));
                 _blockPositions.Add(new Vector3(-13f, 11f, 8f));
+                _blockPositions.Add(new Vector3(-12f, 12f, 8f));
+
 
 
 
@@ -312,6 +329,16 @@ namespace Jump
             catch (System.Exception ex)
             {
                 System.Console.WriteLine($"Failed to load lavamoon.dae: {ex.Message}");
+            }
+            try
+            {
+                Model buttton = new Model("models/button.dae");
+                button = buttton;
+                buttonPositions.Add(new Vector3(-11.4f, 13.4f, 8.5f));
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine($"Failed to load button.dae: {ex.Message}");
             }
 
             try
@@ -463,6 +490,22 @@ namespace Jump
                 UpdateCoalParticles(e);
 
             }
+            if (buttonPressed)
+            {
+                buttonPressTime += (float)e.Time;
+                float t = buttonPressTime / buttonPressDuration;
+
+                if (t < 0.5f)
+                    buttonCurrentScale = MathHelper.Lerp(buttonScale, buttonScale * 0.7f, t * 2);
+                else
+                    buttonCurrentScale = MathHelper.Lerp(buttonScale * 0.7f, buttonScale, (t - 0.5f) * 2);
+
+                if (buttonPressTime >= buttonPressDuration)
+                {
+                    buttonPressed = false;
+                    buttonCurrentScale = buttonScale;
+                }
+            }
         }
 
         private void HandleMenuInput()
@@ -606,6 +649,9 @@ namespace Jump
                 move += right;
             if (KeyboardState.IsKeyPressed(Keys.E))
             {
+                buttonPressed = true;
+                buttonPressTime = 0f;
+
                 TryBreakCoal();
             }
             if (move.LengthSquared > 0)
@@ -887,8 +933,7 @@ namespace Jump
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            // NU apela RenderCoalParticles() aici!
-            // RenderCoalParticles(); // ȘTERGE ACEASTĂ LINIE
+           
 
             _shader.Use();
 
@@ -960,6 +1005,22 @@ namespace Jump
                     GL.BindVertexArray(rock.VAO);
                     GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
                 }
+            }
+            if (button != null)
+            {
+                var pos = buttonPositions[0];
+
+                Matrix4 modelMatrix =
+                    Matrix4.CreateScale(buttonCurrentScale) *
+                    Matrix4.CreateTranslation(pos);
+
+                _shader.SetMatrix4("model", modelMatrix);
+                _shader.SetBool("useTex", true);
+                GL.ActiveTexture(TextureUnit.Texture0);
+                _buttonTexture?.Use();
+
+                GL.BindVertexArray(button.VAO);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, button.Vertices.Length / 5);
             }
 
             if (lavamoon != null)
