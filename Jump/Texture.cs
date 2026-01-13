@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-// Evităm conflictul de nume între PixelFormat din OpenTK și System.Drawing
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
 namespace Jump

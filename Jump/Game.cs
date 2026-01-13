@@ -46,7 +46,7 @@ namespace Jump
         private List<Model> rocks = new List<Model>();
         private List<Vector3> rockPositions = new List<Vector3>();
 
-        private List<Model> _coal= new List<Model>();
+        private List<Model> _coal = new List<Model>();
         private List<Vector3> _coalPositions = new List<Vector3>();
         private Model lavamoon;
         private List<Vector3> lavamoonPositions = new List<Vector3>();
@@ -77,7 +77,7 @@ namespace Jump
 
 
         private float _healthRegenTimer = 0f;
-        private float _healthRegenInterval = 10f; 
+        private float _healthRegenInterval = 10f;
         private int _healthRegenAmount = 10;
 
 
@@ -112,17 +112,20 @@ namespace Jump
             }
             catch { }
 
-            try { 
+            try
+            {
                 _jumpSound = new SoundPlayer("jump.wav");
-            } 
+            }
             catch { }
-            try { 
+            try
+            {
                 _landSound = new SoundPlayer("land.wav");
-            } 
+            }
             catch { }
-            try { 
-                _damageSound = new SoundPlayer("damage.wav"); 
-            } 
+            try
+            {
+                _damageSound = new SoundPlayer("damage.wav");
+            }
             catch { }
             try
             {
@@ -180,7 +183,7 @@ namespace Jump
             {
                 Model stoneBlock = new Model("models/STONE.dae");
 
-                for (int i = 0; i <30; i++)
+                for (int i = 0; i < 30; i++)
                     _blocks.Add(stoneBlock);
                 //baza
                 _blockPositions.Add(new Vector3(0f, -2f, -2f));
@@ -202,7 +205,7 @@ namespace Jump
                 _blockPositions.Add(new Vector3(10f, 3f, 10f));
                 _blockPositions.Add(new Vector3(12f, 4f, 8f));
 
-                
+
 
                 _blockPositions.Add(new Vector3(11f, 5f, 5f));
 
@@ -287,7 +290,7 @@ namespace Jump
                 {
                     Vector3 size = new Vector3(1f, 1f, 1f);
 
-                    
+
                     physicalBlocks.Add(new Block(_blockPositions[i], size));
                 }
             }
@@ -298,7 +301,7 @@ namespace Jump
 
             try
             {
-                Model lavamooon= new Model("models/lavamoon.dae");
+                Model lavamooon = new Model("models/lavamoon.dae");
                 lavamoon = lavamooon;
                 lavamoonPositions.Add(new Vector3(0f, 12f, -32f));
             }
@@ -422,34 +425,38 @@ namespace Jump
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             GL.EnableVertexAttribArray(1);
 
-            try {
-                _titleTexture = Texture.LoadFromFile("game_title.png"); 
-            } 
-            catch { }
-            try { 
-                _lavaTexture = Texture.LoadFromFile("lava.png");
-            } 
-            catch { }
-            try {
-                _stoneTexture = Texture.LoadFromFile("stone.png"); 
-            } 
+            try
+            {
+                _titleTexture = Texture.LoadFromFile("game_title.png");
+            }
             catch { }
             try
             {
-                _coalTexture= Texture.LoadFromFile("coal.png");
+                _lavaTexture = Texture.LoadFromFile("lava.png");
+            }
+            catch { }
+            try
+            {
+                _stoneTexture = Texture.LoadFromFile("stone.png");
+            }
+            catch { }
+            try
+            {
+                _coalTexture = Texture.LoadFromFile("coal.png");
             }
             catch { }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            if (!isPlaying) 
+            if (!isPlaying)
                 HandleMenuInput();
             else
             {
                 HandleGameInput(e);
                 UpdateFireParticles(e);
                 _lavamoonRotation += (float)e.Time;
+                UpdateCoalParticles(e);
 
             }
         }
@@ -470,7 +477,7 @@ namespace Jump
             }
             else if (mouse.Y >= cy - 50 && mouse.Y <= cy + 50)
             {
-                if (isMusicOn) 
+                if (isMusicOn)
                     _musicPlayer?.Stop();
                 else
                     _musicPlayer?.PlayLooping();
@@ -547,7 +554,7 @@ namespace Jump
                     _healthRegenTimer = 0f;
 
                     _damageSound?.Play();
-                    float shakeAmount = 20f; 
+                    float shakeAmount = 20f;
                     _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);
                     _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount);
                     _camera.UpdateVectors();
@@ -567,7 +574,7 @@ namespace Jump
             }
             else
             {
-                _lavaTimer = 0f; 
+                _lavaTimer = 0f;
             }
 
             if (isOnGround && KeyboardState.IsKeyDown(Keys.Space))
@@ -587,10 +594,16 @@ namespace Jump
 
 
 
-            if (KeyboardState.IsKeyDown(Keys.S)) move -= forward;
-            if (KeyboardState.IsKeyDown(Keys.A)) move -= right;
-            if (KeyboardState.IsKeyDown(Keys.D)) move += right;
-
+            if (KeyboardState.IsKeyDown(Keys.S)) 
+                move -= forward;
+            if (KeyboardState.IsKeyDown(Keys.A)) 
+                move -= right;
+            if (KeyboardState.IsKeyDown(Keys.D)) 
+                move += right;
+            if (KeyboardState.IsKeyPressed(Keys.E))
+            {
+                TryBreakCoal();
+            }
             if (move.LengthSquared > 0)
                 move = Vector3.Normalize(move) * moveSpeed;
 
@@ -611,7 +624,7 @@ namespace Jump
                 _camera.Position.Y = testPosY.Y;
                 wasOnGround = isOnGround;
                 isOnGround = false;
-                _lastFallSpeed = verticalSpeed; 
+                _lastFallSpeed = verticalSpeed;
             }
             else
             {
@@ -627,9 +640,9 @@ namespace Jump
                         _healthRegenTimer = 0f;
 
                         _damageSound?.Play();
-                        float shakeAmount = 20f; 
-                        _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);   
-                        _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount); 
+                        float shakeAmount = 20f;
+                        _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);
+                        _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount);
                         _camera.UpdateVectors();
                         System.Console.WriteLine($"Fall damage: {fallDamage}! Health: {_player.health}");
 
@@ -752,10 +765,10 @@ namespace Jump
                     fireParticles.Add(new FireParticle
                     {
                         Position = new Vector3(
-                            (float)(random.NextDouble() * 40 - 20), -1.9f,(float)(random.NextDouble() * 40 - 20)),
+                            (float)(random.NextDouble() * 40 - 20), -1.9f, (float)(random.NextDouble() * 40 - 20)),
                         Velocity = new Vector3(
-                            (float)(random.NextDouble() * 0.5 - 0.25), 
-                            (float)(random.NextDouble() * 2 + 1),      
+                            (float)(random.NextDouble() * 0.5 - 0.25),
+                            (float)(random.NextDouble() * 2 + 1),
                             (float)(random.NextDouble() * 0.5 - 0.25)
                         ),
                         Life = 1f,
@@ -769,7 +782,7 @@ namespace Jump
                 var p = fireParticles[i];
 
                 p.Position += p.Velocity * deltaTime;
-                p.Velocity.Y -= 0.5f * deltaTime; 
+                p.Velocity.Y -= 0.5f * deltaTime;
                 p.Life -= deltaTime;
 
                 if (p.Life <= 0)
@@ -780,22 +793,22 @@ namespace Jump
         private void RenderFireParticles()
         {
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One); 
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One);
 
             foreach (var p in fireParticles)
             {
-                float alpha = p.Life; 
+                float alpha = p.Life;
                 Vector4 color;
 
-                
+
 
 
                 if (p.Life > 0.7f)
-                    color = new Vector4(1f, 1f, 0.3f, alpha); 
+                    color = new Vector4(1f, 1f, 0.3f, alpha);
                 else if (p.Life > 0.3f)
                     color = new Vector4(1f, 0.5f, 0f, alpha);
                 else
-                    color = new Vector4(1f, 0f, 0f, alpha);  
+                    color = new Vector4(1f, 0f, 0f, alpha);
 
                 Matrix4 modelMatrix =
                     Matrix4.CreateScale(p.Size) *
@@ -809,7 +822,7 @@ namespace Jump
                 GL.DrawArrays(PrimitiveType.Triangles, 6, 6);
             }
 
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha); 
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -870,11 +883,13 @@ namespace Jump
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            // NU apela RenderCoalParticles() aici!
+            // RenderCoalParticles(); // ȘTERGE ACEASTĂ LINIE
+
             _shader.Use();
 
             _shader.SetMatrix4("view", _camera.GetViewMatrix());
             _shader.SetMatrix4(
-
                 "projection",
                 Matrix4.CreatePerspectiveFieldOfView(
                     MathHelper.DegreesToRadians(60f),
@@ -895,7 +910,6 @@ namespace Jump
             {
                 for (int i = 0; i < _blocks.Count; i++)
                 {
-
                     var block = _blocks[i];
                     var pos = _blockPositions[i];
 
@@ -933,12 +947,6 @@ namespace Jump
                         Matrix4.CreateScale(6f) *
                         Matrix4.CreateTranslation(pos);
 
-
-
-
-
-
-
                     _shader.SetMatrix4("model", modelMatrix);
                     _shader.SetBool("useTex", true);
 
@@ -949,6 +957,7 @@ namespace Jump
                     GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
                 }
             }
+
             if (lavamoon != null)
             {
                 for (int i = 0; i < lavamoonPositions.Count; i++)
@@ -956,44 +965,49 @@ namespace Jump
                     var pos = lavamoonPositions[i];
 
                     Matrix4 modelMatrix =
-
-                        Matrix4.CreateScale(1f) * Matrix4.CreateRotationY(_lavamoonRotation) * Matrix4.CreateTranslation(pos);
-
-                    _shader.SetMatrix4("model", modelMatrix);
-                    _shader.SetBool("useTex", true);
-
-                    GL.ActiveTexture(TextureUnit.Texture0);
-                    _lavamoonTexture?.Use(); 
-
-                    GL.BindVertexArray(lavamoon.VAO);
-                    GL.DrawArrays(PrimitiveType.Triangles, 0, lavamoon.Vertices.Length / 5);
-                }
-            }
-
-            if (_coal.Count > 0)
-            {
-                for (int i = 0; i < _coal.Count; i++)
-                {
-                    var coal = _coal[i];
-                    var pos = _coalPositions[i];
-
-                    Matrix4 modelMatrix =
-                        Matrix4.CreateScale(1.5f) *
+                        Matrix4.CreateScale(1f) *
+                        Matrix4.CreateRotationY(_lavamoonRotation) *
                         Matrix4.CreateTranslation(pos);
 
                     _shader.SetMatrix4("model", modelMatrix);
                     _shader.SetBool("useTex", true);
 
                     GL.ActiveTexture(TextureUnit.Texture0);
-                    _coalTexture?.Use(); 
+                    _lavamoonTexture?.Use();
 
+                    GL.BindVertexArray(lavamoon.VAO);
+                    GL.DrawArrays(PrimitiveType.Triangles, 0, lavamoon.Vertices.Length / 5);
+                }
+            }
+
+            // Randează coal blocks
+            if (_coal.Count > 0)
+            {
+                float playerReach = 3f;
+                Vector3 playerPos = _camera.Position - new Vector3(0, 1.6f, 0);
+
+                for (int i = 0; i < _coal.Count; i++)
+                {
+                    var coal = _coal[i];
+                    var pos = _coalPositions[i];
+
+                    bool isNear = (pos - playerPos).Length < playerReach;
+                    float scale = isNear ? 1.6f : 1.5f;
+
+                    Matrix4 modelMatrix = Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(pos);
+                    _shader.SetMatrix4("model", modelMatrix);
+                    _shader.SetBool("useTex", true);
+                    GL.ActiveTexture(TextureUnit.Texture0);
+                    _coalTexture?.Use();
                     GL.BindVertexArray(coal.VAO);
                     GL.DrawArrays(PrimitiveType.Triangles, 0, coal.Vertices.Length / 5);
                 }
             }
+
+            // Randează particulele DUPĂ toate obiectele solide, dar ÎNAINTE de UI
+            RenderCoalParticles(); // Mută aici!
             RenderFireParticles();
             RenderHealthBar();
-
         }
 
         private void RenderMenu()
@@ -1077,11 +1091,11 @@ namespace Jump
 
             Vector4 healthColor;
             if (healthPercent > 0.6f)
-                healthColor = new Vector4(0, 0.8f, 0, 1);      
+                healthColor = new Vector4(0, 0.8f, 0, 1);
             else if (healthPercent > 0.3f)
-                healthColor = new Vector4(0.9f, 0.9f, 0, 1);   
+                healthColor = new Vector4(0.9f, 0.9f, 0, 1);
             else
-                healthColor = new Vector4(0.9f, 0, 0, 1);      
+                healthColor = new Vector4(0.9f, 0, 0, 1);
 
             _shader.SetVector4("color", healthColor);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
@@ -1119,7 +1133,7 @@ namespace Jump
 
                 float x = (float)(random.NextDouble() * 40 - 20);
                 float z = (float)(random.NextDouble() * 40 - 20);
-                float y = -0.5f; 
+                float y = -0.5f;
 
                 Vector3 pos = new Vector3(x, y, z);
 
@@ -1136,7 +1150,105 @@ namespace Jump
             }
         }
 
+        private class CoalParticle
+        {
+            public Vector3 Position;
+            public Vector3 Velocity;
+            public float Life;
+            public float Size;
+        }
+
+        private List<CoalParticle> coalParticles = new List<CoalParticle>();
+
+        private void TryBreakCoal()
+        {
+            float playerReach = 3f;
+            Vector3 playerPos = _camera.Position - new Vector3(0, 1.6f, 0);
+
+            for (int i = _coalPositions.Count - 1; i >= 0; i--)
+            {
+                Vector3 coalPos = _coalPositions[i];
+                if ((coalPos - playerPos).Length < playerReach)
+                {
+                    _coalPositions.RemoveAt(i);
+                    _coal.RemoveAt(i);
+
+                    Vector3 coalSize = new Vector3(1.5f, 1.5f, 1.5f);
+                    Vector3 collisionPos = coalPos - new Vector3(coalSize.X / 2, 0, coalSize.Z / 2);
+                    Block toRemove = physicalBlocks.FirstOrDefault(b =>(b.Position - collisionPos).Length < 1f);
+
+                    if (toRemove != null)
+                        physicalBlocks.Remove(toRemove);
+
+                    SpawnCoalParticles(coalPos);
+                    _player.health = Math.Min(_player.health + 10, 100);
+                    _damageSound?.Play();
+                    break;
+                }
+            }
+        }
+
+        private void SpawnCoalParticles(Vector3 position)
+        {
+            Random rand = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                coalParticles.Add(new CoalParticle
+                {
+                    Position = position,
+                    Velocity = new Vector3(
+                        (float)(rand.NextDouble() * 2 - 1),
+                        (float)(rand.NextDouble() * 2),
+                        (float)(rand.NextDouble() * 2 - 1)
+                    ),
+                    Life = 1f,
+                    Size = (float)(rand.NextDouble() * 0.3 + 0.2)
+                });
+            }
+        }
+
+        private void UpdateCoalParticles(FrameEventArgs e)
+        {
+            float deltaTime = (float)e.Time;
+            for (int i = coalParticles.Count - 1; i >= 0; i--)
+            {
+                var p = coalParticles[i];
+                p.Position += p.Velocity * deltaTime;
+                p.Velocity.Y -= 0.5f * deltaTime;
+                p.Life -= deltaTime;
+                if (p.Life <= 0)
+                    coalParticles.RemoveAt(i);
+            }
+        }
+
+        private void RenderCoalParticles()
+        {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One);
+
+            foreach (var p in coalParticles)
+            {
+                float alpha = p.Life;
+                Vector4 color = new Vector4(0.2f, 0.2f, 0.2f, alpha);
+
+                Matrix4 modelMatrix = Matrix4.CreateScale(p.Size) *
+                                      Matrix4.CreateTranslation(p.Position);
+
+                _shader.SetMatrix4("model", modelMatrix);
+                _shader.SetBool("useTex", false);
+                _shader.SetVector4("color", color);
+
+                GL.BindVertexArray(_vao);
+                GL.DrawArrays(PrimitiveType.Triangles, 6, 6);
+            }
+
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        }
+
+
+
 
     }
 
 }
+
