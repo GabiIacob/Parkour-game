@@ -36,6 +36,8 @@ namespace Jump
         private Texture _stoneTexture;
         private Texture _lavamoonTexture;
         private Texture _coalTexture;
+        private Texture _controlsTexture;
+
         private int _vao;
 
         //modele pozitii si coliziuni
@@ -83,7 +85,7 @@ namespace Jump
 
 
         private float coalSpawnTimer = 0f;
-        private float coalSpawnInterval = 20f;
+        private float coalSpawnInterval = 10f;
 
         public Game(GameWindowSettings gws, NativeWindowSettings nws)
             : base(gws, nws)
@@ -132,7 +134,14 @@ namespace Jump
                 _lavamoonTexture = Texture.LoadFromFile("lavamoon.png");
             }
             catch { }
-
+            try
+            {
+                _controlsTexture = Texture.LoadFromFile("controls.png");
+            }
+            catch
+            {
+                Console.WriteLine("Nu am putut încărca controls.png");
+            }
 
             string vertexShaderCode = @"#version 330 core
                 layout (location = 0) in vec3 aPos;
@@ -183,7 +192,7 @@ namespace Jump
             {
                 Model stoneBlock = new Model("models/STONE.dae");
 
-                for (int i = 0; i < 30; i++)
+                for (int i = 0; i < 43; i++)
                     _blocks.Add(stoneBlock);
                 //baza
                 _blockPositions.Add(new Vector3(0f, -2f, -2f));
@@ -221,17 +230,34 @@ namespace Jump
 
                 _blockPositions.Add(new Vector3(9f, 7f, -7f));
                 _blockPositions.Add(new Vector3(13f, 7f, -10));
-                _blockPositions.Add(new Vector3(13f, 8f, -13f));
+                _blockPositions.Add(new Vector3(10f, 8f, -13f));
 
-                _blockPositions.Add(new Vector3(13f, 9f, -16f));
-
-
-                _blockPositions.Add(new Vector3(9f, 9f, -16f));
-
-                _blockPositions.Add(new Vector3(5f, 9f, -16f));
-                _blockPositions.Add(new Vector3(0f, 9f, -16f));
+                _blockPositions.Add(new Vector3(10f, 9f, -16f));
 
 
+                _blockPositions.Add(new Vector3(6f, 9f, -16f));
+
+                _blockPositions.Add(new Vector3(2f, 9f, -16f));
+                _blockPositions.Add(new Vector3(-3f, 9f, -16f));
+                _blockPositions.Add(new Vector3(-3f, 10f, -13f));
+
+                _blockPositions.Add(new Vector3(-5f, 11f, -11f));
+
+                _blockPositions.Add(new Vector3(-7f, 11f, -8f));
+                _blockPositions.Add(new Vector3(-9f, 11f, -5f));
+                _blockPositions.Add(new Vector3(-12f, 11f, -2f));
+                _blockPositions.Add(new Vector3(-12f, 11f, 2f));
+                _blockPositions.Add(new Vector3(-12f, 11f, 6f));
+
+
+                _blockPositions.Add(new Vector3(-11f, 11f, 6f));
+                _blockPositions.Add(new Vector3(-13f, 11f, 6f));
+                _blockPositions.Add(new Vector3(-12f, 11f, 7f));
+                _blockPositions.Add(new Vector3(-11f, 11f, 7f));
+                _blockPositions.Add(new Vector3(-13f, 11f, 7f));
+                _blockPositions.Add(new Vector3(-12f, 11f, 8f));
+                _blockPositions.Add(new Vector3(-11f, 11f, 8f));
+                _blockPositions.Add(new Vector3(-13f, 11f, 8f));
 
 
 
@@ -248,36 +274,14 @@ namespace Jump
 
 
 
-                _blockPositions.Add(new Vector3(12f, 7f, 18f));
-                _blockPositions.Add(new Vector3(11f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(10f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(9f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(8f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(7f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(6f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(5f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(4f, 7f, 18f));
 
-                _blockPositions.Add(new Vector3(3f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(2f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(1f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(0f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(-1f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(-2f, 7f, 18f));
-
-                _blockPositions.Add(new Vector3(-3f, 7f, 18f));
 
 
 
@@ -1004,11 +1008,12 @@ namespace Jump
                 }
             }
 
-            // Randează particulele DUPĂ toate obiectele solide, dar ÎNAINTE de UI
-            RenderCoalParticles(); // Mută aici!
+            RenderCoalParticles(); 
             RenderFireParticles();
             RenderHealthBar();
         }
+
+
 
         private void RenderMenu()
         {
@@ -1040,6 +1045,25 @@ namespace Jump
 
             _shader.SetVector4("color", new Vector4(0.8f, 0, 0, 1));
             GL.DrawArrays(PrimitiveType.Triangles, 18, 6);
+            if (_controlsTexture != null)
+            {
+                _shader.SetBool("useTex", true);
+                _controlsTexture.Use();
+
+                float scaleX = 0.8f; 
+                float scaleY = 1.5f; 
+                float posX = -0.6f; 
+                float posY = -1f; 
+
+                Matrix4 modelMatrix =
+                    Matrix4.CreateScale(scaleX, scaleY, 1f) *
+                    Matrix4.CreateTranslation(posX, posY, 0f);
+
+                _shader.SetMatrix4("model", modelMatrix);
+
+                GL.BindVertexArray(_vao);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            }
         }
         private void RenderHealthBar()
         {
@@ -1181,7 +1205,7 @@ namespace Jump
                         physicalBlocks.Remove(toRemove);
 
                     SpawnCoalParticles(coalPos);
-                    _player.health = Math.Min(_player.health + 10, 100);
+                    _player.health = Math.Min(_player.health + 20, 100);
                     _damageSound?.Play();
                     break;
                 }
