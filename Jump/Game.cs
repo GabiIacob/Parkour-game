@@ -66,6 +66,8 @@ namespace Jump
         private float buttonPressDuration = 0.2f; 
         private float buttonScale = 0.2f; 
         private float buttonCurrentScale = 0.2f;
+
+
         private class FireParticle
         {
             public Vector3 Position;
@@ -95,6 +97,9 @@ namespace Jump
 
         private float coalSpawnTimer = 0f;
         private float coalSpawnInterval = 10f;
+
+
+        private float lavamoonAngle = 0f;
 
         public Game(GameWindowSettings gws, NativeWindowSettings nws)
             : base(gws, nws)
@@ -488,6 +493,8 @@ namespace Jump
                 UpdateFireParticles(e);
                 _lavamoonRotation += (float)e.Time;
                 UpdateCoalParticles(e);
+                lavamoonAngle += (float)e.Time* 0.1f;
+
 
             }
             if (buttonPressed)
@@ -1027,7 +1034,16 @@ namespace Jump
             {
                 for (int i = 0; i < lavamoonPositions.Count; i++)
                 {
-                    var pos = lavamoonPositions[i];
+                    Vector3 mapCenter = Vector3.Zero; 
+                    float radius = 35f;              
+
+                    Vector3 pos = new Vector3(
+                        mapCenter.X + MathF.Cos(lavamoonAngle) * radius,
+                        16f, 
+                        mapCenter.Z + MathF.Sin(lavamoonAngle) * radius
+                    );
+
+
 
                     Matrix4 modelMatrix =
                         Matrix4.CreateScale(1f) *
@@ -1045,7 +1061,6 @@ namespace Jump
                 }
             }
 
-            // Randează coal blocks
             if (_coal.Count > 0)
             {
                 float playerReach = 3f;

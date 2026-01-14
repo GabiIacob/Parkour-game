@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\block.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\textures\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:textures\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\stone.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
@@ -58,44 +54,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "lavamoon.png",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\textures\\lavamoon.png",
-              "RelativeDocumentMoniker": "textures\\lavamoon.png",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\textures\\lavamoon.png",
-              "RelativeToolTip": "textures\\lavamoon.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-01-13T09:53:22.578Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "stone.png",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\stone.png",
-              "RelativeDocumentMoniker": "Assets\\stone.png",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\stone.png",
-              "RelativeToolTip": "Assets\\stone.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-01-13T09:52:17.922Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "coal.png",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\coal.png",
-              "RelativeDocumentMoniker": "Assets\\coal.png",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\coal.png",
-              "RelativeToolTip": "Assets\\coal.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-01-13T09:52:13.848Z"
             },
             {
               "$type": "Document",
@@ -110,7 +73,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MovingPlatform.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\MovingPlatform.cs",
               "RelativeDocumentMoniker": "MovingPlatform.cs",
@@ -134,7 +97,55 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 0,
+              "Title": "Game.cs",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs",
+              "RelativeDocumentMoniker": "Game.cs",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs*",
+              "RelativeToolTip": "Game.cs*",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAAEUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-05T10:02:10.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Camera.cs",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
+              "RelativeDocumentMoniker": "Camera.cs",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
+              "RelativeToolTip": "Camera.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwCUAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T16:40:54.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "coal.png",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\coal.png",
+              "RelativeDocumentMoniker": "Assets\\coal.png",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\coal.png",
+              "RelativeToolTip": "Assets\\coal.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-01-13T09:52:13.848Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "stone.png",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\stone.png",
+              "RelativeDocumentMoniker": "Assets\\stone.png",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\stone.png",
+              "RelativeToolTip": "Assets\\stone.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-01-13T09:52:17.922Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Model.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Model.cs",
               "RelativeDocumentMoniker": "Model.cs",
@@ -143,19 +154,6 @@
               "ViewState": "AgIAABIAAAAAAAAAAAAYwCoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-05T11:35:53.71Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Game.cs",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs",
-              "RelativeDocumentMoniker": "Game.cs",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs*",
-              "RelativeToolTip": "Game.cs*",
-              "ViewState": "AgIAAOsDAAAAAAAAAAAiwPQDAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-05T10:02:10.78Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -183,19 +181,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Camera.cs",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
-              "RelativeDocumentMoniker": "Camera.cs",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
-              "RelativeToolTip": "Camera.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwCUAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-04T16:40:54.34Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
