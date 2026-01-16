@@ -11,8 +11,7 @@ namespace Jump
         public Vector3 Up = Vector3.UnitY;
         public Vector3 Right = Vector3.UnitX;
 
-        // Unghiurile de rotație
-        public float Pitch;          // sus / jos
+        public float Pitch;          
         public float Yaw = -90.0f;    // stanga / dreapta
 
         // Constructor

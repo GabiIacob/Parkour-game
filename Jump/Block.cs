@@ -19,9 +19,7 @@ namespace Jump
         }
         public bool CheckCollision(Vector3 point)
         {
-            return (point.X >= Position.X && point.X <= Position.X + Size.X) &&
-                   (point.Y >= Position.Y && point.Y <= Position.Y + Size.Y) &&
-                   (point.Z >= Position.Z && point.Z <= Position.Z + Size.Z);
+            return (point.X >= Position.X && point.X <= Position.X + Size.X) && (point.Y >= Position.Y && point.Y <= Position.Y + Size.Y) &&(point.Z >= Position.Z && point.Z <= Position.Z + Size.Z);
         }
     }
 }

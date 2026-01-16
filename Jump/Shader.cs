@@ -13,6 +13,10 @@ namespace Jump
             GL.ShaderSource(vertexShader, vertexSource);
             GL.CompileShader(vertexShader);
 
+
+
+
+
             int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, fragmentSource);
             GL.CompileShader(fragmentShader);
@@ -29,6 +33,8 @@ namespace Jump
             GL.UseProgram(Handle);
         }
 
+
+
         public void SetMatrix4(string name, Matrix4 value)
         {
             int location = GL.GetUniformLocation(Handle, name);
@@ -40,6 +46,7 @@ namespace Jump
             int location = GL.GetUniformLocation(Handle, name);
             GL.Uniform4(location, value);
         }
+
 
         public void SetBool(string name, bool value)
         {
@@ -57,6 +64,11 @@ namespace Jump
             }
             GL.Uniform1(location, intValue);
         }
+
+
+
+
+
         public void SetFloat(string name, float value)
         {
             int location = GL.GetUniformLocation(Handle, name);

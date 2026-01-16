@@ -39,6 +39,9 @@ namespace Jump
         private Texture _controlsTexture;
         private Texture _buttonTexture;
         private Texture _objectiveTexture;
+        private Texture _waterTexture;
+        private Texture _gameOverTexture;
+
 
         private int _vao;
 
@@ -98,9 +101,12 @@ namespace Jump
 
         private float coalSpawnTimer = 0f;
         private float coalSpawnInterval = 10f;
+        private bool isLava = true;
 
 
         private float lavamoonAngle = 0f;
+
+        private bool isButtonGameOver = false;
 
         public Game(GameWindowSettings gws, NativeWindowSettings nws)
             : base(gws, nws)
@@ -154,7 +160,7 @@ namespace Jump
                 _buttonTexture = Texture.LoadFromFile("button.png");
                 
             }
-            catch (Exception ex) { Console.WriteLine("Nu am putut incarca button.png: " + ex.Message); }
+            catch (Exception ex) {}
             try
             {
                 _controlsTexture = Texture.LoadFromFile("controls.png");
@@ -171,6 +177,23 @@ namespace Jump
             {
                                Console.WriteLine("Nu am putut incarca obiectiv.png");
             }
+            try
+            {
+                _waterTexture = Texture.LoadFromFile("water.png");
+            }
+            catch
+            {
+                Console.WriteLine("Nu am putut incarca water.png");
+            }
+            try
+            {
+                _gameOverTexture = Texture.LoadFromFile("gameover.png");
+            }
+            catch
+            {
+                Console.WriteLine("Nu am putut incarca gameover.png");
+            }
+
 
             string vertexShaderCode = @"#version 330 core
                 layout (location = 0) in vec3 aPos;
@@ -498,10 +521,19 @@ namespace Jump
             else
             {
                 HandleGameInput(e);
-                UpdateFireParticles(e);
+                
                 _lavamoonRotation += (float)e.Time;
                 UpdateCoalParticles(e);
                 lavamoonAngle += (float)e.Time* 0.1f;
+                if (isLava)
+                {
+                    UpdateFireParticles(e);
+                }
+                else
+                {
+                    fireParticles.Clear(); 
+                }
+
 
 
             }
@@ -586,7 +618,6 @@ namespace Jump
                 }
             }
 
-            // HP-regen
             if (!isGameOver && _player.health > 0 && _player.health < 100)
             {
                 _healthRegenTimer += (float)e.Time;
@@ -628,7 +659,8 @@ namespace Jump
 
             var lavaBlock = physicalBlocks[0];
 
-            bool isInLava = _camera.Position.Y - eyeHeight < lavaBlock.Position.Y + lavaBlock.Size.Y + 0.5f;
+            bool isInLava = isLava &&
+                _camera.Position.Y - eyeHeight < lavaBlock.Position.Y + lavaBlock.Size.Y + 0.5f;
 
             if (isInLava)
             {
@@ -644,7 +676,6 @@ namespace Jump
                     _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount);
                     _camera.UpdateVectors();
 
-                    System.Console.WriteLine($"Lava damage! Health: {_player.health}");
                     _lavaTimer = 0f;
 
                     if (_player.health <= 0)
@@ -652,7 +683,6 @@ namespace Jump
                         isGameOver = true;
                         gameOverTimer = 0f;
                         _damageSound?.Play();
-                        System.Console.WriteLine("GAME OVER!");
                         return;
                     }
                 }
@@ -697,8 +727,9 @@ namespace Jump
                     buttonPressTime = 0f;
 
                     RemoveBlockAtPosition(new Vector3(-12f, 11f, 7f));
+                    isLava = false;
+                    isButtonGameOver = true;
 
-                    
                 }
                 TryBreakCoal();
             }
@@ -743,14 +774,12 @@ namespace Jump
                         _camera.Yaw += (float)((random.NextDouble() - 0.5) * shakeAmount);
                         _camera.Pitch += (float)((random.NextDouble() - 0.5) * shakeAmount);
                         _camera.UpdateVectors();
-                        System.Console.WriteLine($"Fall damage: {fallDamage}! Health: {_player.health}");
 
                         if (_player.health <= 0)
                         {
                             isGameOver = true;
                             gameOverTimer = 0f;
                             _damageSound?.Play();
-                            System.Console.WriteLine("GAME OVER!");
                             return;
                         }
                     }
@@ -931,11 +960,12 @@ namespace Jump
 
             if (isPlaying)
             {
-                if (isGameOver)
+                if (isGameOver || isButtonGameOver)
                     RenderGameOver();
                 else
                     RenderGame();
             }
+
             else
                 RenderMenu();
 
@@ -955,28 +985,62 @@ namespace Jump
             _shader.SetBool("useTex", false);
 
             float[] overlay = {
-                -1f, -1f, 0, 0, 0,
-                 1f, -1f, 0, 0, 0,
-                 1f,  1f, 0, 0, 0,
-                 1f,  1f, 0, 0, 0,
-                 -1f,  1f, 0, 0, 0,
-                 -1f, -1f, 0, 0, 0};
-
-            int vao = GL.GenVertexArray();
-            int vbo = GL.GenBuffer();
-            GL.BindVertexArray(vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+        -1f, -1f, 0, 0, 0,
+         1f, -1f, 0, 0, 0,
+         1f,  1f, 0, 0, 0,
+         1f,  1f, 0, 0, 0,
+        -1f,  1f, 0, 0, 0,
+        -1f, -1f, 0, 0, 0
+    };
+            int overlayVao = GL.GenVertexArray();
+            int overlayVbo = GL.GenBuffer();
+            GL.BindVertexArray(overlayVao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, overlayVbo);
             GL.BufferData(BufferTarget.ArrayBuffer, overlay.Length * sizeof(float), overlay, BufferUsageHint.DynamicDraw);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            _shader.SetVector4("color", new Vector4(0.5f, 0.5f, 0.5f, 0.6f));
+            _shader.SetVector4("color", new Vector4(0.5f, 0.5f, 0.5f, 0.6f)); 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
-            GL.DeleteBuffer(vbo);
-            GL.DeleteVertexArray(vao);
+            GL.DeleteBuffer(overlayVbo);
+            GL.DeleteVertexArray(overlayVao);
+
+            if (_gameOverTexture != null)
+            {
+                _shader.SetBool("useTex", true);
+                GL.ActiveTexture(TextureUnit.Texture0);
+                _gameOverTexture.Use();
+
+                float[] gameOverQuad = {
+            -0.5f,  0.6f, 0,  0, 0,
+             0.5f,  0.6f, 0,  1, 0,
+             0.5f,  0.8f, 0,  1, 1,
+             0.5f,  0.8f, 0,  1, 1,
+            -0.5f,  0.8f, 0,  0, 1,
+            -0.5f,  0.6f, 0,  0, 0
+        };
+
+                int vao = GL.GenVertexArray();
+                int vbo = GL.GenBuffer();
+                GL.BindVertexArray(vao);
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+                GL.BufferData(BufferTarget.ArrayBuffer, gameOverQuad.Length * sizeof(float), gameOverQuad, BufferUsageHint.DynamicDraw);
+
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+                GL.EnableVertexAttribArray(0);
+                GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+                GL.EnableVertexAttribArray(1);
+
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+                GL.DeleteBuffer(vbo);
+                GL.DeleteVertexArray(vao);
+            }
+
             GL.Enable(EnableCap.DepthTest);
         }
+
         private void RenderGame()
         {
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1f);
@@ -1001,7 +1065,12 @@ namespace Jump
 
             _shader.SetMatrix4("model", Matrix4.Identity);
             _shader.SetBool("useTex", true);
-            _lavaTexture?.Use();
+
+            if (isLava)
+                _lavaTexture?.Use();
+            else
+                _waterTexture?.Use();
+
             GL.DrawArrays(PrimitiveType.Triangles, 24, 6);
 
             if (_blocks.Count > 0)
@@ -1049,7 +1118,11 @@ namespace Jump
                     _shader.SetBool("useTex", true);
 
                     GL.ActiveTexture(TextureUnit.Texture0);
-                    _lavaTexture?.Use();
+                    if (isLava)
+                        _lavaTexture?.Use();
+                    else
+                        _waterTexture?.Use();
+
 
                     GL.BindVertexArray(rock.VAO);
                     GL.DrawArrays(PrimitiveType.Triangles, 0, rock.Vertices.Length / 5);
@@ -1185,7 +1258,7 @@ namespace Jump
             if (_objectiveTexture != null)
             {
                 _shader.SetBool("useTex", true);
-               _objectiveTexture.Use();
+               _objectiveTexture.Use(); 
 
                 float scaleX = 0.8f;
                 float scaleY = 1.5f;
@@ -1409,7 +1482,28 @@ namespace Jump
 
 
 
+
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

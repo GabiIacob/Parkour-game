@@ -7,32 +7,44 @@
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\block.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:block.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\lava.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:assets\\lava.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\block.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:block.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:movingplatform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:assets\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\lava.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:assets\\lava.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:assets\\lavamoon.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\stone.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
@@ -41,14 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\assets\\coal.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
       "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:assets\\coal.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|c:\\users\\gabii\\desktop\\umfst\\an3\\gpc\\jump\\jump\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34C8E11D-5573-4F75-B955-DCE40B0921F3}|Jump.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -66,18 +70,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "lavamoon.png",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\lavamoon.png",
-              "RelativeDocumentMoniker": "Assets\\lavamoon.png",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\lavamoon.png",
-              "RelativeToolTip": "Assets\\lavamoon.png",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-01-13T09:52:02.751Z"
+              "DocumentIndex": 5,
+              "Title": "Player.cs",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Player.cs",
+              "RelativeDocumentMoniker": "Player.cs",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Player.cs",
+              "RelativeToolTip": "Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-16T17:41:15.773Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "MovingPlatform.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\MovingPlatform.cs",
               "RelativeDocumentMoniker": "MovingPlatform.cs",
@@ -89,13 +94,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "Block.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Block.cs",
               "RelativeDocumentMoniker": "Block.cs",
               "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Block.cs",
               "RelativeToolTip": "Block.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAIBJwBIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-05T15:56:35.494Z"
             },
@@ -105,28 +110,28 @@
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs",
               "RelativeDocumentMoniker": "Game.cs",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs*",
-              "RelativeToolTip": "Game.cs*",
-              "ViewState": "AgIAAJcEAAAAAAAAAAAAAKsEAAA7AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Game.cs",
+              "RelativeToolTip": "Game.cs",
+              "ViewState": "AgIAANwFAAAAAAAAAAAAAKYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-05T10:02:10.78Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Camera.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
               "RelativeDocumentMoniker": "Camera.cs",
               "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Camera.cs",
               "RelativeToolTip": "Camera.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAuwCkAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T16:40:54.34Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "coal.png",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\coal.png",
               "RelativeDocumentMoniker": "Assets\\coal.png",
@@ -137,7 +142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 11,
               "Title": "stone.png",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\stone.png",
               "RelativeDocumentMoniker": "Assets\\stone.png",
@@ -148,43 +153,66 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 3,
               "Title": "Model.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Model.cs",
               "RelativeDocumentMoniker": "Model.cs",
               "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Model.cs",
               "RelativeToolTip": "Model.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAYwCoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAADwvzsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-05T11:35:53.71Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Texture.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Texture.cs",
               "RelativeDocumentMoniker": "Texture.cs",
               "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Texture.cs",
               "RelativeToolTip": "Texture.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAIBJwBoAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T17:13:30.327Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Shader.cs",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Shader.cs",
               "RelativeDocumentMoniker": "Shader.cs",
               "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Shader.cs",
               "RelativeToolTip": "Shader.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAA5wD8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAADYAAAAAAAAAAAAowEYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T16:44:05.421Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T16:30:54.922Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "lavamoon.png",
+              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\lavamoon.png",
+              "RelativeDocumentMoniker": "Assets\\lavamoon.png",
+              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\lavamoon.png",
+              "RelativeToolTip": "Assets\\lavamoon.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2026-01-13T09:52:02.751Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "lava.png",
               "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Assets\\lava.png",
               "RelativeDocumentMoniker": "Assets\\lava.png",
@@ -192,18 +220,6 @@
               "RelativeToolTip": "Assets\\lava.png",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
               "WhenOpened": "2026-01-14T15:33:36.924Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\gabii\\Desktop\\UMFST\\an3\\Gpc\\Jump\\Jump\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAQwAYAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-04T16:30:54.922Z"
             }
           ]
         }
