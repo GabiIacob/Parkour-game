@@ -57,5 +57,10 @@ namespace Jump
             }
             GL.Uniform1(location, intValue);
         }
+        public void SetFloat(string name, float value)
+        {
+            int location = GL.GetUniformLocation(Handle, name);
+            GL.Uniform1(location, value);
+        }
     }
 }

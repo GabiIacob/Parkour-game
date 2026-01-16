@@ -38,6 +38,7 @@ namespace Jump
         private Texture _coalTexture;
         private Texture _controlsTexture;
         private Texture _buttonTexture;
+        private Texture _objectiveTexture;
 
         private int _vao;
 
@@ -153,14 +154,22 @@ namespace Jump
                 _buttonTexture = Texture.LoadFromFile("button.png");
                 
             }
-            catch (Exception ex) { Console.WriteLine("Nu am putut încărca button.png: " + ex.Message); }
+            catch (Exception ex) { Console.WriteLine("Nu am putut incarca button.png: " + ex.Message); }
             try
             {
                 _controlsTexture = Texture.LoadFromFile("controls.png");
             }
             catch
             {
-                Console.WriteLine("Nu am putut încărca controls.png");
+                Console.WriteLine("Nu am putut incarca controls.png");
+            }
+            try
+            {
+                _objectiveTexture = Texture.LoadFromFile("obiectiv.png");
+            }
+            catch
+            {
+                               Console.WriteLine("Nu am putut incarca obiectiv.png");
             }
 
             string vertexShaderCode = @"#version 330 core
@@ -358,7 +367,6 @@ namespace Jump
 
                 Vector3 collisionPos = coalPos - new Vector3(coalSize.X / 2, 0, coalSize.Z / 2);
 
-                // Adaugă blocul fizic pentru coliziune
                 physicalBlocks.Add(new Block(collisionPos, coalSize));
             }
             catch (System.Exception ex)
@@ -499,6 +507,7 @@ namespace Jump
             }
             if (buttonPressed)
             {
+                
                 buttonPressTime += (float)e.Time;
                 float t = buttonPressTime / buttonPressDuration;
 
@@ -514,6 +523,28 @@ namespace Jump
                 }
             }
         }
+        private void RemoveBlockAtPosition(Vector3 blockPos)
+        {
+            for (int i = _blockPositions.Count - 1; i >= 0; i--)
+            {
+                if ((_blockPositions[i] - blockPos).Length < 0.1f)
+                {
+                    _blockPositions.RemoveAt(i);
+                    _blocks.RemoveAt(i);
+                    break;
+                }
+            }
+
+            for (int i = physicalBlocks.Count - 1; i >= 0; i--)
+            {
+                if ((physicalBlocks[i].Position - blockPos).Length < 0.1f)
+                {
+                    physicalBlocks.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
 
         private void HandleMenuInput()
         {
@@ -654,13 +685,24 @@ namespace Jump
                 move -= right;
             if (KeyboardState.IsKeyDown(Keys.D)) 
                 move += right;
-            if (KeyboardState.IsKeyPressed(Keys.E))
+            if (KeyboardState.IsKeyDown(Keys.E))
             {
-                buttonPressed = true;
-                buttonPressTime = 0f;
+                Vector3 playerPos = _camera.Position - new Vector3(0, 1.6f, 0); 
+                Vector3 buttonPos = buttonPositions[0];
+                float buttonReach = 2f; 
 
+                if ((buttonPos - playerPos).Length < buttonReach)
+                {
+                    buttonPressed = true;
+                    buttonPressTime = 0f;
+
+                    RemoveBlockAtPosition(new Vector3(-12f, 11f, 7f));
+
+                    
+                }
                 TryBreakCoal();
             }
+
             if (move.LengthSquared > 0)
                 move = Vector3.Normalize(move) * moveSpeed;
 
@@ -1133,6 +1175,25 @@ namespace Jump
 
                 Matrix4 modelMatrix =
                     Matrix4.CreateScale(scaleX, scaleY, 1f) *
+                    Matrix4.CreateTranslation(posX, posY, 0f);
+
+                _shader.SetMatrix4("model", modelMatrix);
+
+                GL.BindVertexArray(_vao);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            }
+            if (_objectiveTexture != null)
+            {
+                _shader.SetBool("useTex", true);
+               _objectiveTexture.Use();
+
+                float scaleX = 0.8f;
+                float scaleY = 1.5f;
+                float posX = 0.6f;
+                float posY = -1f;
+
+                Matrix4 modelMatrix =
+                    Matrix4.CreateScale(scaleX, scaleY, 0.5f) *
                     Matrix4.CreateTranslation(posX, posY, 0f);
 
                 _shader.SetMatrix4("model", modelMatrix);
